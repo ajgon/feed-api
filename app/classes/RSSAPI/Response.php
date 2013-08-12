@@ -67,7 +67,7 @@ class Response
 
 
         if ($return) {
-            return $reponse;
+            return $response;
         } else {
             echo $response;
         }

@@ -36,6 +36,16 @@ class Auth
     }
 
     /**
+     * Returns Api Key
+     *
+     * @return string Api Key
+     */
+    public function getApiKey()
+    {
+        return $this->_api_key;
+    }
+
+    /**
      * Validates api_key against database of approved tokens.
      *
      * @return boolean Is api_key valid?
