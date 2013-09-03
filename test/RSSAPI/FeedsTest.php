@@ -1,0 +1,43 @@
+<?php
+
+namespace RSSAPI;
+
+class FeedsTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFeedsJSON() {
+        $response = new Response(2, 'json');
+        $response->includeFeeds();
+
+        $result = json_decode($response->render(true), true);
+
+        $this->assertNotEmpty($result['feeds']);
+        $this->assertCount(5, $result['feeds']);
+        for ($i = 0; $i < 5; $i++) {
+            $this->assertEquals($i + 1, $result['feeds'][$i]['favicon_id']);
+            $this->assertEquals('Test Feed #' . ($i + 1), $result['feeds'][$i]['title']);
+            $this->assertEquals('http://example.com/feed' . ($i + 1), $result['feeds'][$i]['url']);
+            $this->assertEquals('http://feed' . ($i + 1) . '.example.com/', $result['feeds'][$i]['site_url']);
+            $this->assertEquals(0, $result['feeds'][$i]['is_spark']);
+            $this->assertEquals(1000000001 + $i, $result['feeds'][$i]['last_updated_on_time']);
+        }
+    }
+
+    public function testFeedsXML() {
+        $response = new Response(2, 'xml');
+        $response->includeFeeds();
+
+        $result = new \DOMDocument();
+        $result->loadXML($response->render(true));
+
+        $this->assertEquals(1, $result->getElementsByTagName('feeds')->length);
+        $this->assertEquals(5, $result->getElementsByTagName('feed')->length);
+        for ($i = 0; $i < 5; $i++) {
+            $this->assertEquals($i + 1, $result->getElementsByTagName('feed')->item($i)->childNodes->item(1)->textContent);
+            $this->assertEquals('Test Feed #' . ($i + 1), $result->getElementsByTagName('feed')->item($i)->childNodes->item(2)->textContent);
+            $this->assertEquals('http://example.com/feed' . ($i + 1), $result->getElementsByTagName('feed')->item($i)->childNodes->item(3)->textContent);
+            $this->assertEquals('http://feed' . ($i + 1) . '.example.com/', $result->getElementsByTagName('feed')->item($i)->childNodes->item(4)->textContent);
+            $this->assertEquals(0, $result->getElementsByTagName('feed')->item($i)->childNodes->item(5)->textContent);
+            $this->assertEquals(1000000001 + $i, $result->getElementsByTagName('feed')->item($i)->childNodes->item(6)->textContent);
+        }
+    }
+}

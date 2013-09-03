@@ -41,7 +41,34 @@ class Base
         $this->initDatabase();
 
         if ($this->authenticate()) {
-
+            // items, favicons, feeds, groups
+            if (isset($_GET['groups'])) {
+                $this->_response->includeGroups();
+                $this->_response->includeFeedsGroups();
+            }
+            if (isset($_GET['feeds'])) {
+                $this->_response->includeFeedsGroups();
+                $this->_response->includeFeeds();
+            }
+            if (isset($_GET['favicons'])) {
+                $this->_response->includeFavicons();
+            }
+            if (isset($_GET['items'])) {
+                $since_id = isset($_GET['since_id']) ? $_GET['since_id'] : null;
+                $max_id = isset($_GET['max_id']) ? $_GET['max_id'] : null;
+                $with_ids = isset($_GET['with_ids']) ? explode(',', $_GET['with_ids']) : null;
+                $this->_response->includeItems(false, $since_id, $max_id, $with_ids);
+            }
+            if (isset($_GET['links'])) {
+                // not implemented
+                $this->_response->includeLinks();
+            }
+            if (isset($_GET['unread_item_ids'])) {
+                $this->_response->includeUnreadItemIds();
+            }
+            if (isset($_GET['saved_item_ids'])) {
+                $this->_response->includeSavedItemIds();
+            }
         }
 
         $this->_response->render();
