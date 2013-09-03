@@ -9,7 +9,7 @@ class CreateItems extends Migration
      */
     public function up()
     {
-        $sql = 'CREATE TABLE items (id integer PRIMARY KEY AUTOINCREMENT, feed_id integer, title varchar(255), author varchar(255), html text, url varchar(4096), is_saved tinyint(1), is_read tinyint(1), created_on_time timestamp)';
+        $sql = 'CREATE TABLE items (id integer PRIMARY KEY AUTOINCREMENT, feed_id integer, title varchar(255), author varchar(255), html text, url varchar(4096), is_saved tinyint(1), is_read tinyint(1), created_on_time timestamp, added_on_time timestamp)';
         $container = $this->getContainer();
         $container['db']->query($sql);
     }

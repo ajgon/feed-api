@@ -41,7 +41,22 @@ class Base
         $this->initDatabase();
 
         if ($this->authenticate()) {
-            // items, favicons, feeds, groups
+            if (isset($_POST['mark'], $_POST['as'], $_POST['id'])) {
+                $this->_response->mark($_POST['mark'], $_POST['as'], $_POST['id'], isset($_POST['before']) ? $_POST['before'] : null);
+                if($_POST['mark'] === 'item') {
+                    switch($_POST['as']) {
+                    case 'unread':
+                    case 'read':
+                        $this->_response->includeUnreadItemIds();
+                        break;
+                    case 'unsaved':
+                    case 'saved':
+                        $this->_response->includeSavedItemIds();
+                        break;
+                    }
+                }
+            }
+
             if (isset($_GET['groups'])) {
                 $this->_response->includeGroups();
                 $this->_response->includeFeedsGroups();
@@ -69,6 +84,7 @@ class Base
             if (isset($_GET['saved_item_ids'])) {
                 $this->_response->includeSavedItemIds();
             }
+
         }
 
         $this->_response->render();

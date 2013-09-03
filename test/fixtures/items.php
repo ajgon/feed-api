@@ -9,7 +9,8 @@ return array(
         'url' => 'http://example.com/item1.1',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000011
+        'created_on_time' => 1000000011,
+        'added_on_time' => 1000000011
     ),
     array(
         'feed_id' => 1,
@@ -19,7 +20,8 @@ return array(
         'url' => 'http://example.com/item1.2',
         'is_saved' => 0,
         'is_read' => 1,
-        'created_on_time' => 1000000012
+        'created_on_time' => 1000000012,
+        'added_on_time' => 1000000012
     ),
     array(
         'feed_id' => 1,
@@ -29,7 +31,8 @@ return array(
         'url' => 'http://example.com/item1.3',
         'is_saved' => 1,
         'is_read' => 0,
-        'created_on_time' => 1000000013
+        'created_on_time' => 1000000013,
+        'added_on_time' => 1000000013
     ),
     array(
         'feed_id' => 1,
@@ -39,7 +42,8 @@ return array(
         'url' => 'http://example.com/item1.4',
         'is_saved' => 1,
         'is_read' => 1,
-        'created_on_time' => 1000000014
+        'created_on_time' => 1000000014,
+        'added_on_time' => 1000000014
     ),
     array(
         'feed_id' => 1,
@@ -49,7 +53,8 @@ return array(
         'url' => 'http://example.com/item1.5',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000015
+        'created_on_time' => 1000000015,
+        'added_on_time' => 1000000015
     ),
     array(
         'feed_id' => 2,
@@ -59,7 +64,8 @@ return array(
         'url' => 'http://example.com/item2.1',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000021
+        'created_on_time' => 1000000021,
+        'added_on_time' => 1000000021
     ),
     array(
         'feed_id' => 2,
@@ -69,7 +75,8 @@ return array(
         'url' => 'http://example.com/item2.2',
         'is_saved' => 0,
         'is_read' => 1,
-        'created_on_time' => 1000000022
+        'created_on_time' => 1000000022,
+        'added_on_time' => 1000000022
     ),
     array(
         'feed_id' => 2,
@@ -79,7 +86,8 @@ return array(
         'url' => 'http://example.com/item2.3',
         'is_saved' => 1,
         'is_read' => 0,
-        'created_on_time' => 1000000023
+        'created_on_time' => 1000000023,
+        'added_on_time' => 1000000023
     ),
     array(
         'feed_id' => 2,
@@ -89,7 +97,8 @@ return array(
         'url' => 'http://example.com/item2.4',
         'is_saved' => 1,
         'is_read' => 1,
-        'created_on_time' => 1000000024
+        'created_on_time' => 1000000024,
+        'added_on_time' => 1000000024
     ),
     array(
         'feed_id' => 2,
@@ -99,7 +108,8 @@ return array(
         'url' => 'http://example.com/item2.5',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000025
+        'created_on_time' => 1000000025,
+        'added_on_time' => 1000000025
     ),
     array(
         'feed_id' => 3,
@@ -109,7 +119,8 @@ return array(
         'url' => 'http://example.com/item3.1',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000031
+        'created_on_time' => 1000000031,
+        'added_on_time' => 1000000031
     ),
     array(
         'feed_id' => 3,
@@ -119,7 +130,8 @@ return array(
         'url' => 'http://example.com/item3.2',
         'is_saved' => 0,
         'is_read' => 1,
-        'created_on_time' => 1000000032
+        'created_on_time' => 1000000032,
+        'added_on_time' => 1000000032
     ),
     array(
         'feed_id' => 3,
@@ -129,7 +141,8 @@ return array(
         'url' => 'http://example.com/item3.3',
         'is_saved' => 1,
         'is_read' => 0,
-        'created_on_time' => 1000000033
+        'created_on_time' => 1000000033,
+        'added_on_time' => 1000000033
     ),
     array(
         'feed_id' => 3,
@@ -139,7 +152,8 @@ return array(
         'url' => 'http://example.com/item3.4',
         'is_saved' => 1,
         'is_read' => 1,
-        'created_on_time' => 1000000034
+        'created_on_time' => 1000000034,
+        'added_on_time' => 1000000034
     ),
     array(
         'feed_id' => 3,
@@ -149,7 +163,8 @@ return array(
         'url' => 'http://example.com/item3.5',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000035
+        'created_on_time' => 1000000035,
+        'added_on_time' => 1000000035
     ),
     array(
         'feed_id' => 4,
@@ -159,7 +174,8 @@ return array(
         'url' => 'http://example.com/item4.1',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000041
+        'created_on_time' => 1000000041,
+        'added_on_time' => 1000000041
     ),
     array(
         'feed_id' => 4,
@@ -169,7 +185,8 @@ return array(
         'url' => 'http://example.com/item4.2',
         'is_saved' => 0,
         'is_read' => 1,
-        'created_on_time' => 1000000042
+        'created_on_time' => 1000000042,
+        'added_on_time' => 1000000042
     ),
     array(
         'feed_id' => 4,
@@ -179,7 +196,8 @@ return array(
         'url' => 'http://example.com/item4.3',
         'is_saved' => 1,
         'is_read' => 0,
-        'created_on_time' => 1000000043
+        'created_on_time' => 1000000043,
+        'added_on_time' => 1000000043
     ),
     array(
         'feed_id' => 4,
@@ -189,7 +207,8 @@ return array(
         'url' => 'http://example.com/item4.4',
         'is_saved' => 1,
         'is_read' => 1,
-        'created_on_time' => 1000000044
+        'created_on_time' => 1000000044,
+        'added_on_time' => 1000000044
     ),
     array(
         'feed_id' => 4,
@@ -199,7 +218,8 @@ return array(
         'url' => 'http://example.com/item4.5',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000045
+        'created_on_time' => 1000000045,
+        'added_on_time' => 1000000045
     ),
     array(
         'feed_id' => 5,
@@ -209,7 +229,8 @@ return array(
         'url' => 'http://example.com/item5.1',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000051
+        'created_on_time' => 1000000051,
+        'added_on_time' => 1000000051
     ),
     array(
         'feed_id' => 5,
@@ -219,7 +240,8 @@ return array(
         'url' => 'http://example.com/item5.2',
         'is_saved' => 0,
         'is_read' => 1,
-        'created_on_time' => 1000000052
+        'created_on_time' => 1000000052,
+        'added_on_time' => 1000000052
     ),
     array(
         'feed_id' => 5,
@@ -229,7 +251,8 @@ return array(
         'url' => 'http://example.com/item5.3',
         'is_saved' => 1,
         'is_read' => 0,
-        'created_on_time' => 1000000053
+        'created_on_time' => 1000000053,
+        'added_on_time' => 1000000053
     ),
     array(
         'feed_id' => 5,
@@ -239,7 +262,8 @@ return array(
         'url' => 'http://example.com/item5.4',
         'is_saved' => 1,
         'is_read' => 1,
-        'created_on_time' => 1000000054
+        'created_on_time' => 1000000054,
+        'added_on_time' => 1000000054
     ),
     array(
         'feed_id' => 5,
@@ -249,6 +273,7 @@ return array(
         'url' => 'http://example.com/item5.5',
         'is_saved' => 0,
         'is_read' => 0,
-        'created_on_time' => 1000000055
+        'created_on_time' => 1000000055,
+        'added_on_time' => 1000000055
     ),
 );

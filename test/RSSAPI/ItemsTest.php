@@ -4,7 +4,7 @@ namespace RSSAPI;
 
 class ItemsTest extends \PHPUnit_Framework_TestCase
 {
-    public function testItemsJSON() {
+    public function testReadItemsJSON() {
         $response = new Response(2, 'json');
         $response->includeItems();
 
@@ -27,9 +27,34 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
 
             }
         }
+
+        // since_id
+        $response->includeItems(true, 8);
+        $result = json_decode($response->render(true), true);
+        $this->assertNotEmpty($result['items']);
+        $this->assertEquals(25, $result['total_items']);
+        $this->assertCount(17, $result['items']);
+
+        // max_id
+        $response->includeItems(true, null, 13);
+        $result = json_decode($response->render(true), true);
+        $this->assertNotEmpty($result['items']);
+        $this->assertEquals(25, $result['total_items']);
+        $this->assertCount(12, $result['items']);
+
+        // with_ids
+        $ids = array(3, 8, 11, 17, 22, 25);
+        $response->includeItems(true, null, null, $ids);
+        $result = json_decode($response->render(true), true);
+        $this->assertNotEmpty($result['items']);
+        $this->assertEquals(25, $result['total_items']);
+        $this->assertCount(6, $result['items']);
+        foreach($result['items'] as $r => $res) {
+            $this->assertEquals($ids[$r], $res['id']);
+        }
     }
 
-    public function testItemsXML() {
+    public function testReadItemsXML() {
         $response = new Response(2, 'xml');
         $response->includeItems();
 
@@ -52,5 +77,29 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals(1000000000 + 10 * $i + $j, $result->getElementsByTagName('item')->item($idx)->childNodes->item(8)->textContent);
             }
         }
+    }
+
+    public function testWriteItems() {
+        $response = new Response(2, 'json');
+
+        $response->mark('item', 'read', 5);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        $this->assertEquals(1, $result['items'][4]['is_read']);
+
+        $response->mark('item', 'unread', 5);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        $this->assertEquals(0, $result['items'][4]['is_read']);
+
+        $response->mark('item', 'saved', 5);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        $this->assertEquals(1, $result['items'][4]['is_saved']);
+
+        $response->mark('item', 'unsaved', 5);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        $this->assertEquals(0, $result['items'][4]['is_saved']);
     }
 }

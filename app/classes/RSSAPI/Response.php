@@ -135,15 +135,15 @@ class Response
         } else if ($max_id) {
             // Don't ask, fever API is dumb.
             $items = \ORM::for_table('items')->where_lt('id', $max_id)->order_by_desc('id')->limit(50)->find_array();
-            $items = array_reverse($items);
+            //$items = array_reverse($items);
         } else if ($with_ids) {
             $items = \ORM::for_table('items')->where_in('id', $with_ids)->limit(50)->find_array();
         } else {
             $items = \ORM::for_table('items')->limit(50)->find_array();
         }
         if ($force || !isset($this->_data['items'])) {
-            $this->_data['total_items'] = (string)count($items);
-            $this->_data['items'] = $this->convertIDs($items);
+            $this->_data['total_items'] = (string)\ORM::for_table('items')->count();
+            $this->_data['items'] = $this->convertIDs($this->stripFields($items, array('added_on_time')));
         }
     }
 
@@ -193,6 +193,54 @@ class Response
         }
         sort($ids, SORT_NUMERIC);
         $this->_data['saved_item_ids'] = implode(',', $ids);
+    }
+
+    public function mark($type, $as, $id, $before = null) {
+        $type = strtolower($type);
+        $as = strtolower($as);
+        $id = (int)$id;
+        $before = (int)$before;
+        if (($as === 'read' || $as === 'unread' || $as === 'saved' || $as === 'unsaved') && $id > 0) {
+            $field = ($as === 'read' || $as === 'unread') ? 'is_read' : 'is_saved';
+            $value = ($as === 'read' || $as === 'saved') ? 1 : 0;
+
+            if ($type === 'item') {
+                $record = \ORM::for_table('items')->find_one($id);
+                $record->set($field, $value);
+                $record->save();
+            }
+
+            if ($type === 'feed') {
+                $records = \ORM::for_table('items')->select('id')->where('feed_id', $id)->where_lt('items.added_on_time', $before)->find_array();
+
+                // Has to be done since idiorm is to basic to do multiple updates
+                $ids = array();
+                foreach ($records as $record) {
+                    $ids[] = $record['id'];
+                }
+                if(!empty($ids)) {
+                    \ORM::for_table('items')->raw_query('UPDATE items SET `' . $field . '` = :field WHERE `id` IN (' . implode(',', $ids) . ')', array('field' => $value))->find_one();
+                }
+            }
+
+            if ($type === 'group') {
+                $feeds_groups = \ORM::for_table('feeds_groups')->where('group_id', $id)->find_array();
+                $feeds = array();
+                foreach ($feeds_groups as $fg) {
+                    $feeds[] = $fg['feed_id'];
+                }
+                $records = \ORM::for_table('items')->where_in('feed_id', $feeds)->where_lt('items.added_on_time', $before)->find_array();
+
+                // Has to be done since idiorm is to basic to do multiple updates
+                $ids = array();
+                foreach ($records as $record) {
+                    $ids[] = $record['id'];
+                }
+                if(!empty($ids)) {
+                    \ORM::for_table('items')->raw_query('UPDATE items SET `' . $field . '` = :field WHERE `id` IN (' . implode(',', $ids) . ')', array('field' => $value))->find_one();
+                }
+            }
+        }
     }
 
     /**
@@ -276,5 +324,17 @@ class Response
             }
         }
         return $items;
+    }
+
+    private function stripFields($items, $fields) {
+        $result = array();
+        $fields = is_array($fields) ? $fields : array($fields);
+        foreach ($items as $item) {
+            foreach ($fields as $field) {
+                unset($item[$field]);
+            }
+            $result[] = $item;
+        }
+        return $result;
     }
 }

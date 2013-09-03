@@ -30,4 +30,63 @@ class GroupsTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('Test Group #' . ($i + 1), $result->getElementsByTagName('group')->item($i)->childNodes->item(1)->textContent);
         }
     }
+
+    public function testWriteGroups() {
+        $response = new Response(2, 'json');
+        $ids = array(10, 11, 12, 13, 14, 20, 21);
+
+        $response->mark('group', 'read', 3, 1000000053);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        foreach ($ids as $i) {
+            $this->assertEquals(1, $result['items'][$i]['is_read']);
+        }
+        $this->assertEquals(0, $result['items'][15]['is_read']);
+        $this->assertEquals(1, $result['items'][16]['is_read']);
+        $this->assertEquals(0, $result['items'][17]['is_read']);
+        $this->assertEquals(1, $result['items'][18]['is_read']);
+        $this->assertEquals(0, $result['items'][19]['is_read']);
+
+        $response->mark('group', 'unread', 3, 1000000053);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        foreach ($ids as $i) {
+            $this->assertEquals(0, $result['items'][$i]['is_read']);
+        }
+        $this->assertEquals(0, $result['items'][15]['is_read']);
+        $this->assertEquals(1, $result['items'][16]['is_read']);
+        $this->assertEquals(0, $result['items'][17]['is_read']);
+        $this->assertEquals(1, $result['items'][18]['is_read']);
+        $this->assertEquals(0, $result['items'][19]['is_read']);
+
+        $response->mark('group', 'saved', 3, 1000000053);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        foreach ($ids as $i) {
+            $this->assertEquals(1, $result['items'][$i]['is_saved']);
+        }
+        $this->assertEquals(0, $result['items'][15]['is_saved']);
+        $this->assertEquals(0, $result['items'][16]['is_saved']);
+        $this->assertEquals(1, $result['items'][17]['is_saved']);
+        $this->assertEquals(1, $result['items'][18]['is_saved']);
+        $this->assertEquals(0, $result['items'][19]['is_saved']);
+
+        $response->mark('group', 'unsaved', 3, 1000000053);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        foreach ($ids as $i) {
+            $this->assertEquals(0, $result['items'][$i]['is_saved']);
+        }
+        $this->assertEquals(0, $result['items'][15]['is_saved']);
+        $this->assertEquals(0, $result['items'][16]['is_saved']);
+        $this->assertEquals(1, $result['items'][17]['is_saved']);
+        $this->assertEquals(1, $result['items'][18]['is_saved']);
+        $this->assertEquals(0, $result['items'][19]['is_saved']);
+
+        $response->mark('item', 'read', 12);
+        $response->mark('item', 'read', 14);
+        $response->mark('item', 'read', 22);
+        $response->mark('item', 'saved', 13);
+        $response->mark('item', 'saved', 14);
+    }
 }

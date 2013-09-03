@@ -40,4 +40,39 @@ class FeedsTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(1000000001 + $i, $result->getElementsByTagName('feed')->item($i)->childNodes->item(6)->textContent);
         }
     }
+
+    public function testWriteFeeds() {
+        $response = new Response(2, 'json');
+
+        $response->mark('feed', 'read', 2, 1000000024);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        for ($i = 5; $i < 8; $i++) {
+            $this->assertEquals(1, $result['items'][$i]['is_read']);
+        }
+
+        $response->mark('feed', 'unread', 2, 1000000024);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        for ($i = 5; $i < 8; $i++) {
+            $this->assertEquals(0, $result['items'][$i]['is_read']);
+        }
+
+        $response->mark('feed', 'saved', 2, 1000000024);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        for ($i = 5; $i < 8; $i++) {
+            $this->assertEquals(1, $result['items'][$i]['is_saved']);
+        }
+
+        $response->mark('feed', 'unsaved', 2, 1000000024);
+        $response->includeItems(true);
+        $result = json_decode($response->render(true), true);
+        for ($i = 5; $i < 8; $i++) {
+            $this->assertEquals(0, $result['items'][$i]['is_saved']);
+        }
+
+        $response->mark('item', 'read', 7);
+        $response->mark('item', 'saved', 8);
+    }
 }
