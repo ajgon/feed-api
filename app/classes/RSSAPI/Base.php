@@ -29,6 +29,10 @@ class Base
 
     /**
      * Init application.
+     *
+     * @param string $main_dir Main application directory
+     *
+     * @return null
      */
     public function init($main_dir = null)
     {
@@ -41,6 +45,8 @@ class Base
         $this->initDatabase();
 
         if ($this->authenticate()) {
+            $this->_response->includeLastRefreshsedOnTime($_POST['api_key']);
+
             if (isset($_POST['mark'], $_POST['as'], $_POST['id'])) {
                 $this->_response->mark($_POST['mark'], $_POST['as'], $_POST['id'], isset($_POST['before']) ? $_POST['before'] : null);
                 if($_POST['mark'] === 'item') {
@@ -84,7 +90,6 @@ class Base
             if (isset($_GET['saved_item_ids'])) {
                 $this->_response->includeSavedItemIds();
             }
-
         }
 
         $this->_response->render();
@@ -105,6 +110,8 @@ class Base
 
     /**
      * Initialize database
+     *
+     * @return null
      */
     private function initDatabase()
     {

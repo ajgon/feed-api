@@ -56,4 +56,14 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertRegExp('/<auth>0<\/auth>/', $result = $response->render(true));
     }
+
+    public function testLastRefreshedOnTime()
+    {
+        $response = new Response(self::$api_version, 'json');
+        $response->setAuth(true);
+        $response->includeLastRefreshsedOnTime('105404aef1fb9f9952e8433294fe44a8');
+        $result = json_decode($response->render(true), true);
+
+        $this->assertEquals(1378236337, $result['last_refreshed_on_time']);
+    }
 }

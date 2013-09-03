@@ -35,7 +35,7 @@ class Response
     {
         $this->_type = ($type === 'xml' ? 'xml' : 'json');
         $this->_data = array(
-            'api_version' => $api_version
+            'api_version' => (int)$api_version
         );
     }
 
@@ -46,7 +46,24 @@ class Response
      */
     public function setAuth($auth)
     {
-        $this->_data['auth'] = ($auth ? '1' : '0');
+        $this->_data['auth'] = ($auth ? 1 : 0);
+    }
+
+    /**
+     * Include information about last API call in response for given user (identified via API Key).
+     *
+     * @param  string $api_key API Key
+     *
+     * @return null
+     */
+    public function includeLastRefreshsedOnTime($api_key = '')
+    {
+        $user = \ORM::for_table('users')->where('api_key', $api_key)->find_one();
+        if($user) {
+            $this->_data['last_refreshed_on_time'] = $user->last_refreshed_on_time;
+            $user->last_refreshed_on_time = time();
+            $user->save();
+        }
     }
 
     /**
@@ -195,6 +212,16 @@ class Response
         $this->_data['saved_item_ids'] = implode(',', $ids);
     }
 
+    /**
+     * Write API in one method. It covers all actions for setting RSS items/feeds/groups as read/unread or saved/unsaved.
+     *
+     * @param  string    $type   Object type [item|feed|group]
+     * @param  string    $as     Object status [read|unread|saved|unsaved]
+     * @param  string    $id     Object id
+     * @param  timestamp $before Only for feed/group. Include only items for give feed/group that are older than timestamp specified in this parameter.
+     *
+     * @return null
+     */
     public function mark($type, $as, $id, $before = null) {
         $type = strtolower($type);
         $as = strtolower($as);
@@ -262,6 +289,7 @@ class Response
         if ($return) {
             return $response;
         } else {
+            header('Content-Type: application/json');
             echo $response;
         }
     }
@@ -315,6 +343,13 @@ class Response
         return $xml;
     }
 
+    /**
+     * Converts all fields in given array with name ending in *id to integer.
+     *
+     * @param  array $items Given items
+     *
+     * @return array Items with ids converted to integer.
+     */
     private function convertIDs($items) {
         foreach ($items as $i => $item) {
             foreach ($item as $key => $value) {
@@ -326,6 +361,14 @@ class Response
         return $items;
     }
 
+    /**
+     * Removes keys from $items array which are match $fields contents.
+     *
+     * @param  array $items  Give array
+     * @param  array $fields Array of fields which should be removed
+     *
+     * @return array Stripped array
+     */
     private function stripFields($items, $fields) {
         $result = array();
         $fields = is_array($fields) ? $fields : array($fields);
