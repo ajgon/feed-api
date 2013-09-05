@@ -160,7 +160,7 @@ class Response
         }
         if ($force || !isset($this->_data['items'])) {
             $this->_data['total_items'] = (string)\ORM::for_table('items')->count();
-            $this->_data['items'] = $this->convertIDs($this->stripFields($items, array('added_on_time')));
+            $this->_data['items'] = $this->convertIDs($this->stripFields($items, array('added_on_time', 'rss_id')));
         }
     }
 

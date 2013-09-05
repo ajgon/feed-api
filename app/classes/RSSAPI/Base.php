@@ -28,18 +28,26 @@ class Base
     private $_main_dir = null;
 
     /**
-     * Init application.
+     * Constructor
      *
      * @param string $main_dir Main application directory
      *
      * @return null
      */
-    public function init($main_dir = null)
-    {
+    public function __construct($main_dir = null) {
         if (is_null($main_dir)) {
             $main_dir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..'. DIRECTORY_SEPARATOR . '..'. DIRECTORY_SEPARATOR . '..');
         }
         $this->_main_dir = $main_dir;
+    }
+
+    /**
+     * Init application.
+     *
+     * @return null
+     */
+    public function init()
+    {
         $this->_response = new Response(self::API_VERSION, isset($_GET['api']) ? $_GET['api'] : 'json');
 
         $this->initDatabase();
@@ -113,7 +121,7 @@ class Base
      *
      * @return null
      */
-    private function initDatabase()
+    public function initDatabase()
     {
         $user_config = require $this->_main_dir . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database.php';
         $auto_config = array(
@@ -126,7 +134,7 @@ class Base
             $user_config,
             $auto_config
         );
-        $db_config['connection_string'] = preg_replace('/^sqlite:/', 'sqlite:../', $db_config['connection_string']);
+        $db_config['connection_string'] = preg_replace('/^sqlite:/', 'sqlite:' . $this->_main_dir . '/', $db_config['connection_string']);
         \ORM::configure($db_config);
     }
 }

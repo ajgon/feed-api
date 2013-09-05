@@ -9,7 +9,7 @@ class CreateFeeds extends Migration
      */
     public function up()
     {
-        $sql = 'CREATE TABLE feeds (id integer PRIMARY KEY AUTOINCREMENT, favicon_id integer, title varchar(255), url varchar(255), site_url varchar(255), is_spark tinyint(1), last_updated_on_time timestamp)';
+        $sql = 'CREATE TABLE feeds (id integer PRIMARY KEY AUTOINCREMENT, favicon_id integer, title varchar(255) not null, url varchar(255) unique not null, site_url varchar(255) not null, is_spark tinyint(1) DEFAULT 0, last_updated_on_time timestamp not null)';
         $container = $this->getContainer();
         $container['db']->query($sql);
     }

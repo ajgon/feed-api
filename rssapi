@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+define('DS', DIRECTORY_SEPARATOR);
+
+$abs_dir = realpath(__DIR__);
+
+// Initialize autoloaders
+require $abs_dir . DS . 'vendor' . DS . 'autoload.php';
+require $abs_dir . DS . 'app' . DS . 'classes' . DS . 'RSSAPI' . DS .'Autoload.php';
+
+$autoloader = new RSSAPI\Autoload();
+$autoloader->setBasePath($abs_dir . DS . 'app' . DS . 'classes')->register();
+
+$base = new RSSAPI\CLI($argv);
+$base->process();
