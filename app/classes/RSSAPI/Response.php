@@ -119,7 +119,7 @@ class Response
     {
         $feeds = \ORM::for_table('feeds')->find_array();
         if ($force || !isset($this->_data['feeds'])) {
-            $this->_data['feeds'] = $this->convertIDs($feeds);
+            $this->_data['feeds'] = $this->convertIDs($this->stripFields($feeds, 'feed_type'));
         }
     }
 

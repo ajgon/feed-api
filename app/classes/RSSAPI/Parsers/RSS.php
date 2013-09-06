@@ -58,7 +58,8 @@ class RSS extends \RSSAPI\Parser
 
         $result = array(
             'feed' => array(
-                'last_updated_on_time' => $time
+                'last_updated_on_time' => $time,
+                'feed_type' => 'RSS'
             ),
             'items' => array()
         );

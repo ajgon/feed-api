@@ -61,7 +61,7 @@ class Data
         $feed = \ORM::for_table('feeds')->where('url', $items['feed']['url'])->find_one();
 
         // Add feed
-        if (!empty($items['feed']['url']) && !$feed) {
+        if (isset($items['feed']) && !empty($items['feed']['url']) && !$feed) {
             $feed = \ORM::for_table('feeds')->create();
             foreach ($items['feed'] as $key => $value) {
                 $feed->set($key, $value);
@@ -69,17 +69,19 @@ class Data
             $feed->save();
         }
 
-        foreach ($items['items'] as $data) {
-            $item = \ORM::for_table('items')->where('rss_id', $data['rss_id'])->find_one();
-            if(!$item) {
-                $item = \ORM::for_table('items')->create();
-            }
-            if(!$item->created_on_time || $item->created_on_time < $data['created_on_time']) {
-                foreach ($data as $key => $value) {
-                    $item->set($key, $value);
+        if(isset($items['items'])) {
+            foreach ($items['items'] as $data) {
+                $item = \ORM::for_table('items')->where('rss_id', $data['rss_id'])->find_one();
+                if(!$item) {
+                    $item = \ORM::for_table('items')->create();
                 }
-                $item->feed_id = $feed->id;
-                $item->save();
+                if(!$item->created_on_time || $item->created_on_time < $data['created_on_time']) {
+                    foreach ($data as $key => $value) {
+                        $item->set($key, $value);
+                    }
+                    $item->feed_id = $feed->id;
+                    $item->save();
+                }
             }
         }
     }

@@ -109,14 +109,8 @@ abstract class Parser
             $rel = $link->getAttribute('rel');
             $type = $link->getAttribute('type');
             if ($rel == 'alternate' && preg_match('/application\/(atom|rss)\+xml/', $type)) {
-                $title = $link->getAttribute('title');
-                $href = $link->getAttribute('href');
-                $type = $link->getAttribute('type');
-                $items[] = array(
-                    'type' => self::detectByMimeType($type),
-                    'title' => $title,
-                    'url' => $href
-                );
+                // This have to be done this way since alot of sites, says that link type is rss, while serving atom underneath.
+                $items[] = self::fetchFeedLink($link->getAttribute('href'));
             }
         }
 

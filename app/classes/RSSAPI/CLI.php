@@ -39,6 +39,7 @@ class CLI
         $this->_command = $args[0];
         $this->_action = $args[1];
         $this->_param = $args[2];
+        $this->initDatabase();
     }
 
     /**
@@ -47,22 +48,85 @@ class CLI
      *
      * @return null
      */
-    public function add() {
+    public function add()
+    {
         if (empty($this->_param)) {
             $this->error('Please provide URL of site/RSS channel which you wish to add.', 'site/rss url');
             return;
         }
 
-        try {
-            $linkData = $this->fetchFeedLink($this->_param);
+        $linkData = $this->fetchFeedLink($this->_param);
 
+        if ($linkData) {
             $parserName = '\\RSSAPI\\Parsers\\' . $linkData['type'];
             $parser = new $parserName();
             $items = $parser->parseLink($linkData['url']);
+            unset($items['items']);
 
             Data::addToDatabase($items);
-        } catch (Exception $e) {
-            $this->error($e->getMessage(), false);
+        }
+    }
+
+    /**
+     * ./rssapi fetch
+     * Fetches new or updated items for feeds in database.
+     *
+     * @return null
+     */
+    public function fetch()
+    {
+        $feeds = \ORM::for_table('feeds')->find_array();
+
+        foreach ($feeds as $feed) {
+            $parserName = '\\RSSAPI\\Parsers\\' . $feed['feed_type'];
+            $parser = new $parserName();
+            $items = $parser->parseLink($feed['url']);
+
+            Data::addToDatabase($items);
+        }
+    }
+
+    /**
+     * ./rssapi list
+     * Lists all feeds in database.
+     *
+     * @return null
+     */
+    public function listfeeds()
+    {
+        $feeds = \ORM::for_table('feeds')->find_array();
+
+        foreach ($feeds as $f => $feed) {
+            echo ($f + 1) . '. ' . $feed['title'] . ' (' .$feed['url'] . ")\n";
+        }
+    }
+
+    /**
+     * ./rssapi delete
+     * Lists all feeds in database and allows user to delete unnecessary one.
+     *
+     * @return null
+     */
+    public function remove() {
+        $feeds = \ORM::for_table('feeds')->find_array();
+        $items = array();
+
+        foreach ($feeds as $f => $feed) {
+            $items[] = array(
+                'id' => $feed['id'],
+                'name' => $feed['title'] . ' (' .$feed['url'] . ')'
+            );
+        }
+
+        $list = array_map(create_function('$i', 'return $i[\'name\'];'), $items);
+
+        $index = $this->userDetermine($list, false);
+        $feed_id = (int)$items[$index]['id'];
+
+        if ($feed_id > 0) {
+            \ORM::for_table('items')->where('feed_id', $feed_id)->delete_many();
+            \ORM::for_table('feeds_groups')->where('feed_id', $feed_id)->delete_many();
+            \ORM::for_table('feeds')->where('id', $feed_id)->delete_many();
         }
     }
 
@@ -78,13 +142,27 @@ class CLI
             return;
         }
 
-        switch($this->_action) {
-        case 'add':
-            $this->add();
-            break;
-        default:
-            $this->error('Unknown action.');
+        try {
+            switch($this->_action) {
+            case 'add':
+                $this->add();
+                break;
+            case 'fetch':
+                $this->fetch();
+                break;
+            case 'list':
+                $this->listfeeds();
+                break;
+            case 'delete':
+                $this->remove();
+                break;
+            default:
+                $this->error('Unknown action.');
+            }
+        } catch (Exception $e) {
+            $this->error($e->getMessage(), false);
         }
+
     }
 
     /**
@@ -114,8 +192,18 @@ class CLI
      */
     private function showUsage($param = 'parameter') {
         echo "Usage: {$this->_command} <action> [{$param}]\n";
+        echo "Actions: add, fetch, list, delete\n";
     }
 
+    /**
+     * Fetches all links for specified URL. If more than one Feed link is found,
+     * user is allowed to choose the one he wishes. Then function returns linkData
+     * related to that link.
+     *
+     * @param  string $url URL for HTML/Feed
+     *
+     * @return array Link data
+     */
     private function fetchFeedLink($url) {
         $items = Parser::fetchFeedLink($url);
 
@@ -135,45 +223,38 @@ class CLI
 
         $index = $this->userDetermine($list);
 
-        return $items[$index];
-    }
-
-    /**
-     * Data::fetch wrapper - includes CLI errors display.
-     *
-     * @param  string $url URL to fetch
-     *
-     * @return null
-     */
-    private function fetchData($url) {
-        try {
-            return Data::fetch($url);
-        } catch (Exception $e) {
-            $this->error($e->getMessage(), false);
+        if ($index == -1) {
+            return false;
         }
+
+        return $items[$index];
     }
 
     /**
      * Displays a list of options for user, and asks him to choose one.
      *
-     * @param  array $list List of options
+     * @param  array   $list       List of options
+     * @param  boolean $autoCommit If list is one-elem only, return this element index
      *
      * @return integer Chosen option index
      */
-    private function userDetermine($list) {
+    private function userDetermine($list, $autoCommit = true) {
         $listSize = count($list);
+        $opt = -1;
+
         if ($listSize == 0) {
             throw new Exception('Empty list to determine!');
         }
 
-        if ($listSize == 1) {
+        if ($listSize == 1 && $autoCommit) {
             return 0;
         }
 
-        while($opt < 1 || $opt > $listSize) {
+        while($opt < 0 || $opt > $listSize) {
             foreach ($list as $l => $litem) {
                 echo $l + 1 . ". {$litem}\n";
             }
+            echo "0. Cancel\n";
 
             $fh = fopen('php://stdin', 'r');
             $line = fgets($fh);
@@ -182,5 +263,15 @@ class CLI
         }
 
         return $opt - 1;
+    }
+
+    /**
+     * Inits database for CLI.
+     *
+     * @return null
+     */
+    private function initDatabase() {
+        $base = new Base();
+        $base->initDatabase();
     }
 }
