@@ -90,7 +90,7 @@ abstract class Parser
         libxml_use_internal_errors(true);
         $dom->loadXML($html);
         for ($n = 0; $n < $dom->childNodes->length; $n++) {
-            $nodeName = strtolower($dom->childNodes->item($n)->tagName);
+            $nodeName = strtolower($dom->childNodes->item($n)->nodeName);
             if (Parser::detectByNodeName($nodeName)) {
                 return array(
                     'type' => Parser::detectByNodeName($nodeName),

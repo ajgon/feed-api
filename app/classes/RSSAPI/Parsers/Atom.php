@@ -68,7 +68,7 @@ class Atom extends \RSSAPI\Parser
         $feedChildren = $dom->getElementsByTagName('feed')->item(0)->childNodes;
 
         foreach ($feedChildren as $node) {
-            $nodeName = strtolower($node->tagName);
+            $nodeName = strtolower($node->nodeName);
 
             switch($nodeName) {
             case 'title':
@@ -87,7 +87,7 @@ class Atom extends \RSSAPI\Parser
             $entryChildren = $entries->item($e)->childNodes;
             $item = array();
             foreach ($entryChildren as $node) {
-                $nodeName = strtolower($node->tagName);
+                $nodeName = strtolower($node->nodeName);
 
                 switch($nodeName) {
                 case 'title':

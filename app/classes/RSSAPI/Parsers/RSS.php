@@ -67,7 +67,7 @@ class RSS extends \RSSAPI\Parser
         $feedChildren = $dom->getElementsByTagName('rss')->item(0)->getElementsByTagName('channel')->item(0)->childNodes;
 
         foreach ($feedChildren as $node) {
-            $nodeName = strtolower($node->tagName);
+            $nodeName = strtolower($node->nodeName);
 
             switch($nodeName) {
             case 'title':
@@ -84,7 +84,7 @@ class RSS extends \RSSAPI\Parser
             $itemChildren = $items->item($i)->childNodes;
             $item = array('author' => '');
             foreach ($itemChildren as $node) {
-                $nodeName = strtolower($node->tagName);
+                $nodeName = strtolower($node->nodeName);
 
                 switch($nodeName) {
                 case 'title':

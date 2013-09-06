@@ -36,9 +36,9 @@ class CLI
      */
     public function __construct($args)
     {
-        $this->_command = $args[0];
-        $this->_action = $args[1];
-        $this->_param = $args[2];
+        $this->_command = isset($args[0]) ? $args[0] : false;
+        $this->_action  = isset($args[1]) ? $args[1] : false;
+        $this->_param   = isset($args[2]) ? $args[2] : false;
         $this->initDatabase();
     }
 
