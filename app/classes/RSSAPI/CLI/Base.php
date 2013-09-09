@@ -48,41 +48,6 @@ class Base
     }
 
     /**
-     * Fetches all links for specified URL. If more than one Feed link is found,
-     * user is allowed to choose the one he wishes. Then function returns linkData
-     * related to that link.
-     *
-     * @param  string $url URL for HTML/Feed
-     *
-     * @return array Link data
-     */
-    protected function fetchFeedLink($url) {
-        $items = \RSSAPI\Parser::fetchFeedLink($url);
-
-        if (count($items) == 1) {
-            return $items[0];
-        }
-
-        $list = array();
-        foreach ($items as $item) {
-            $list[] = $item['title'] . ' (' . $item['url'] . ')';
-        }
-
-        if (empty($list)) {
-            $this->error('No RSS data found under provided URL.');
-            return;
-        }
-
-        $index = $this->userDetermine($list);
-
-        if ($index == -1) {
-            return false;
-        }
-
-        return $items[$index];
-    }
-
-    /**
      * Displays a list of options for user, and asks him to choose one.
      *
      * @param  array   $list       List of options

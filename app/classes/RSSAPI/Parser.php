@@ -82,9 +82,9 @@ abstract class Parser
      *
      * @param  string $url Item url
      *
-     * @return array Feed data in format: ['type' => Atom/RSS, 'title' => <feed title>, 'url' = > <feed url>]
+     * @return array Feed data in format: [['type' => Atom/RSS, 'title' => <feed title>, 'url' = > <feed url>], ...]
      */
-    static public function fetchFeedLink($url) {
+    static public function fetchFeedData($url) {
         $html = Data::fetch($url);
         $dom = new \DOMDocument();
         libxml_use_internal_errors(true);
@@ -93,9 +93,11 @@ abstract class Parser
             $nodeName = strtolower($dom->childNodes->item($n)->nodeName);
             if (Parser::detectByNodeName($nodeName)) {
                 return array(
-                    'type' => Parser::detectByNodeName($nodeName),
-                    'title' => Parser::detectByNodeName($nodeName) . ' Feed',
-                    'url' => $url
+                    array(
+                        'type' => Parser::detectByNodeName($nodeName),
+                        'title' => Parser::detectByNodeName($nodeName) . ' Feed',
+                        'url' => $url
+                    )
                 );
             }
         }
@@ -103,17 +105,57 @@ abstract class Parser
         $dom->loadHTML($html);
         $links = $dom->getElementsByTagName('link');
         $items = array();
-        $list = array();
 
         foreach ($links as $link) {
             $rel = $link->getAttribute('rel');
             $type = $link->getAttribute('type');
             if ($rel == 'alternate' && preg_match('/application\/(atom|rss)\+xml/', $type)) {
                 // This have to be done this way since alot of sites, says that link type is rss, while serving atom underneath.
-                $items[] = self::fetchFeedLink($link->getAttribute('href'));
+                $item = self::fetchFeedData($link->getAttribute('href'));
+                $item[0]['title'] = $link->getAttribute('title');
+                $items[] = $item[0];
             }
         }
 
         return $items;
+    }
+
+    /**
+     * Parses given link for favicon. If url is determined to be HTML file, discovered favicon link is returned. If content is a feed, site url is determined and parsed for favicon url.
+     *
+     * @param  string $url Item url
+     *
+     * @return string|boolean Favicon url or false
+     */
+    static public function fetchFeedFavicon($url) {
+        $xml = Data::fetch($url);
+        $dom = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadXML($xml);
+        for ($n = 0; $n < $dom->childNodes->length; $n++) {
+            $nodeName = strtolower($dom->childNodes->item($n)->nodeName);
+            if (Parser::detectByNodeName($nodeName)) {
+                $type = Parser::detectByNodeName($nodeName);
+                $parserName = '\\RSSAPI\\Parsers\\' . $type;
+                $parser = new $parserName();
+                $items = $parser->parseLink($url);
+                if (!empty($items['feed']['site_url'])) {
+                    return self::fetchFeedFavicon($items['feed']['site_url']);
+                }
+                return false;
+            }
+        }
+
+        $dom->loadHTML($xml);
+        $links = $dom->getElementsByTagName('link');
+        $items = array();
+
+        foreach ($links as $link) {
+            $rel = $link->getAttribute('rel');
+            if (preg_match('/shortcut.?icon/', $rel)) {
+                return $link->getAttribute('href');
+            }
+        }
+        return false;
     }
 }

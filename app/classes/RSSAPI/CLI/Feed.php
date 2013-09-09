@@ -37,12 +37,15 @@ class Feed extends Base
             return;
         }
 
-        $linkData = $this->fetchFeedLink(self::$param);
+        $result = $this->fetchFeedData(self::$param);
+        $linkData = $result['data'];
+        $linkFavicon = $result['favicon'];
 
         if ($linkData) {
             $parserName = '\\RSSAPI\\Parsers\\' . $linkData['type'];
             $parser = new $parserName();
             $items = $parser->parseLink($linkData['url']);
+            $items['feed']['favicon_id'] = $this->addFavicon($linkFavicon);
             unset($items['items']);
 
             \RSSAPI\Data::addToDatabase($items);
@@ -139,5 +142,73 @@ class Feed extends Base
 
         $index = $this->userDetermine($list, false);
         return (int)$items[$index]['id'];
+    }
+
+
+    /**
+     * Fetches all links for specified URL. If more than one Feed link is found,
+     * user is allowed to choose the one he wishes. Then function returns linkData
+     * related to that link.
+     *
+     * @param  string $url URL for HTML/Feed
+     *
+     * @return array Link data
+     */
+    private function fetchFeedData($url) {
+        $items = \RSSAPI\Parser::fetchFeedData($url);
+        $favicon = \RSSAPI\Parser::fetchFeedFavicon($url);
+
+        if (count($items) == 1) {
+            return array(
+                'favicon' => $favicon,
+                'data' => $items[0]
+            );
+        }
+
+
+        $list = array();
+        foreach ($items as $item) {
+            $list[] = $item['title'] . ' (' . $item['url'] . ')';
+        }
+
+        if (empty($list)) {
+            $this->error('No RSS data found under provided URL.');
+            return;
+        }
+
+        $index = $this->userDetermine($list);
+
+        if ($index == -1) {
+            return false;
+        }
+
+        return array(
+            'favicon' => $favicon,
+            'data' => $items[$index]
+        );
+    }
+
+    /**
+     * Adds favicon from given URL to database and returns it's ID.
+     *
+     * @param string $url favicon URL
+     *
+     * @return integer favicon ID
+     */
+    private function addFavicon($url) {
+        if ($url) {
+            try {
+                $result = \RSSAPI\Data::fetch($url);
+                $finfo = new \finfo(FILEINFO_MIME_TYPE);
+                $favicon = array('data' => $finfo->buffer($result) . ';base64,' . base64_encode($result));
+            } catch(Exception $e) {
+                $favicon = array('data' => 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==');
+            }
+        } else {
+            $favicon = array('data' => 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==');
+        }
+
+        $res = \RSSAPI\Data::addToDatabase(array('favicon' => $favicon));
+        return (int)$res['favicon'];
     }
 }

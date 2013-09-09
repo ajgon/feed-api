@@ -51,25 +51,32 @@ class Data
      *
      * @param array $items Format: array( 'feed' => array( feeds_table_column_names => feeds_table_column_values ), 'items' => array( items_table_column_names => items_table_column_values ) )
      *
-     * @return null
+     * @return array IDs of created items
      */
     public static function addToDatabase($items)
     {
         $base = new Base();
         $base->initDatabase();
 
-        $feed = \ORM::for_table('feeds')->where('url', $items['feed']['url'])->find_one();
+        $result = array();
 
         // Add feed
-        if (isset($items['feed']) && !empty($items['feed']['url']) && !$feed) {
-            $feed = \ORM::for_table('feeds')->create();
-            foreach ($items['feed'] as $key => $value) {
-                $feed->set($key, $value);
+        if (isset($items['feed'])) {
+            $feed = \ORM::for_table('feeds')->where('url', $items['feed']['url'])->find_one();
+            if(!empty($items['feed']['url']) && !$feed) {
+                $feed = \ORM::for_table('feeds')->create();
+                foreach ($items['feed'] as $key => $value) {
+                    $feed->set($key, $value);
+                }
+                $feed->save();
+                $result['feed'] = $feed->id;
+            } else {
+                throw new \RSSAPI\Exception('Feed already exists!');
             }
-            $feed->save();
         }
 
         if(isset($items['items'])) {
+            $result['items'] = array();
             foreach ($items['items'] as $data) {
                 $item = \ORM::for_table('items')->where('rss_id', $data['rss_id'])->find_one();
                 if(!$item) {
@@ -81,6 +88,7 @@ class Data
                     }
                     $item->feed_id = $feed->id;
                     $item->save();
+                    $result['items'][] = $item->id;
                 }
             }
         }
@@ -89,6 +97,7 @@ class Data
             $group = \ORM::for_table('groups')->create();
             $group->title = $items['group']['title'];
             $group->save();
+            $result['group'] = $group->id;
         }
 
         if(isset($items['user'])) {
@@ -96,6 +105,16 @@ class Data
             $user->email = $items['user']['email'];
             $user->api_key = $items['user']['api_key'];
             $user->save();
+            $result['user'] = $user->id;
         }
+
+        if(isset($items['favicon'])) {
+            $favicon = \ORM::for_table('favicons')->create();
+            $favicon->data = $items['favicon']['data'];
+            $favicon->save();
+            $result['favicon'] = $favicon->id;
+        }
+
+        return $result;
     }
 }
