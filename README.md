@@ -66,6 +66,6 @@ Since it's a one on one port of Fever API, all docs can be found here: [http://f
 
 ### Users
 
-* `rssapi user add [email] <password>` - password is optional, if not provided, system will prompt for it (useful if you don't want to leave your password in *_history logs)
-* `rssapi user show` - lists all users
-* `rssapi user remove` - removes user chosen by user
+* `rssapi user add [email] <password>` - password is optional, if not provided, system will prompt for it (useful if you don't want to leave your password in `*_history` logs).
+* `rssapi user show` - lists all users.
+* `rssapi user remove` - removes user chosen by user.

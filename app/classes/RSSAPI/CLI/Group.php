@@ -104,6 +104,22 @@ class Group extends Base
     }
 
     /**
+     * ./rssapi group help
+     * Displays short help describiing all available actions.
+     *
+     * @return null
+     */
+    public function help() {
+        echo 'Usage: ' . self::$command . " group <action> [group_name]\n";
+        echo "Actions: \n";
+        echo "  add [group_name] - will add group to database\n";
+        echo "  attach           - displays list of groups, then list of feeds. If both group\n".
+             "                     and feed are chosen, selected feed will be attached to    \n".
+             "                     selected group\n";
+        echo "  show             - lists all groups with corresponding feeds\n";
+        echo "  remove           - allows user to delete groups\n";
+    }
+    /**
      * Fetches group id chosen by user from the groups list.
      *
      * @return integer group ID

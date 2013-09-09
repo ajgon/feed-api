@@ -92,6 +92,22 @@ class User extends Base
     }
 
     /**
+     * ./rssapi user help
+     * Displays short help describiing all available actions.
+     *
+     * @return null
+     */
+    public function help() {
+        echo 'Usage: ' . self::$command . " user <action> [email] <password>\n";
+        echo "Actions: \n";
+        echo "  add [email] <password> - password is optional, if not provided, system will  \n".
+             "                           prompt for it (useful if you don't want to leave    \n".
+             "                           your password in *_history logs)\n";
+        echo "  show                   - lists all users\n";
+        echo "  remove                 - removes user chosen by user\n";
+    }
+
+    /**
      * Fetches group id chosen by user from the groups list.
      *
      * @return integer group ID

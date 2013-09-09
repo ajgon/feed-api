@@ -101,6 +101,24 @@ class Feed extends Base
     }
 
     /**
+     * ./rssapi feed help
+     * Displays short help describiing all available actions.
+     *
+     * @return null
+     */
+    public function help() {
+        echo 'Usage: ' . self::$command . " feed <action> [site/rss url]\n";
+        echo "Actions: \n";
+        echo "  add [site/rss url] - will add feed to database. If URL to page is provided,  \n".
+             "                       rssapi will determine all the feeds in that page and    \n".
+             "                       offer a choice of the feed if multiple found. If only   \n".
+             "                       one feed is found, it will be added automatically       \n";
+        echo "  fetch              - fetches all new items for the feeds\n";
+        echo "  show               - lists all feeds in database\n";
+        echo "  remove             - allows user to delete feeds\n";
+    }
+
+    /**
      * Fetches feed id chosen by user from the feeds list.
      *
      * @return integer feed ID

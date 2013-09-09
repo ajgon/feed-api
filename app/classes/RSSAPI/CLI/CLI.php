@@ -69,6 +69,9 @@ class CLI extends Base
                 case 'remove':
                     $feed->remove();
                     break;
+                case 'help':
+                    $feed->help();
+                    break;
                 default:
                     $this->error('Unknown action.');
                 }
@@ -88,6 +91,9 @@ class CLI extends Base
                 case 'remove':
                     $group->remove();
                     break;
+                case 'help':
+                    $group->help();
+                    break;
                 default:
                     $this->error('Unknown action.');
                 }
@@ -103,6 +109,9 @@ class CLI extends Base
                     break;
                 case 'remove':
                     $user->remove();
+                    break;
+                case 'help':
+                    $user->help();
                     break;
                 default:
                     $this->error('Unknown action.');

@@ -123,12 +123,8 @@ class Base
      */
     protected function showUsage($param = 'parameter') {
         echo 'Usage: ' . self::$command . " <object> <action> [{$param}]\n";
-        //echo 'Type ' . self::$command . " <object> help - to see detailed info.\n"; //TODO
+        echo 'Type ' . self::$command . " <object> help - to see detailed info.\n"; //TODO
         echo "Objects: feed, group, user\n";
-        echo "Actions: \n";
-        echo "         feed: add, fetch, show, remove\n";
-        echo "        group: add, attach, show, remove\n";
-        echo "         user: add, show, remove\n";
     }
 
     /**
