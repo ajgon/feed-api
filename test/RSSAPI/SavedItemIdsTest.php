@@ -6,6 +6,7 @@ class SavedItemIdsTest extends \PHPUnit_Framework_TestCase
 {
     public function testSavedItemIdsJSON() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeSavedItemIds();
 
         $result = json_decode($response->render(true), true);
@@ -16,6 +17,7 @@ class SavedItemIdsTest extends \PHPUnit_Framework_TestCase
 
     public function testSavedItemIdsXML() {
         $response = new Response(2, 'xml');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeSavedItemIds();
 
         $result = new \DOMDocument();

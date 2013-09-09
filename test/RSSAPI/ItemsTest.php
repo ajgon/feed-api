@@ -6,6 +6,7 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
 {
     public function testReadItemsJSON() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeItems();
 
         $result = json_decode($response->render(true), true);
@@ -57,6 +58,7 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
 
     public function testReadItemsXML() {
         $response = new Response(2, 'xml');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeItems();
 
         $result = new \DOMDocument();
@@ -82,6 +84,7 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteItems() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
 
         $response->mark('item', 'read', 5);
         $response->includeItems(true);

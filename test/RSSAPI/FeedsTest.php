@@ -6,6 +6,7 @@ class FeedsTest extends \PHPUnit_Framework_TestCase
 {
     public function testFeedsJSON() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeFeeds();
 
         $result = json_decode($response->render(true), true);
@@ -25,6 +26,7 @@ class FeedsTest extends \PHPUnit_Framework_TestCase
 
     public function testFeedsXML() {
         $response = new Response(2, 'xml');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeFeeds();
 
         $result = new \DOMDocument();
@@ -44,6 +46,7 @@ class FeedsTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteFeeds() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
 
         $response->mark('feed', 'read', 2, 1000000024);
         $response->includeItems(true);

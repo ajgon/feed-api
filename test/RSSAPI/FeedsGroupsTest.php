@@ -4,8 +4,9 @@ namespace RSSAPI;
 
 class FeedsGroupsTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGroupsJSON() {
+    public function testFeedsGroupsJSON() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeFeedsGroups();
 
         $result = json_decode($response->render(true), true);
@@ -18,8 +19,9 @@ class FeedsGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGroupsXML() {
+    public function testFeedsGroupsXML() {
         $response = new Response(2, 'xml');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeFeedsGroups();
 
         $result = new \DOMDocument();

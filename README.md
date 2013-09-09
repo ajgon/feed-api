@@ -67,5 +67,7 @@ Since it's a one on one port of Fever API, all docs can be found here: [http://f
 ### Users
 
 * `rssapi user add [email] <password>` - password is optional, if not provided, system will prompt for it (useful if you don't want to leave your password in `*_history` logs).
+* `rssapi user addsuper [email] <password>` - same as add, but added user is a super user (he can see all the groups and feeds)
+* `rssapi user attach` - displays list of users, then list of feeds. If both user and feed are chosen, selected feed will be attached to selected user (he will be able to fetch it)
 * `rssapi user show` - lists all users.
 * `rssapi user remove` - removes user chosen by user.

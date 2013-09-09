@@ -104,6 +104,12 @@ class CLI extends Base
                 case 'add':
                     $user->add();
                     break;
+                case 'addsuper':
+                    $user->add(true);
+                    break;
+                case 'attach':
+                    $user->attach();
+                    break;
                 case 'show':
                     $user->show();
                     break;

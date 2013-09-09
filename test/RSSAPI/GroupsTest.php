@@ -6,6 +6,7 @@ class GroupsTest extends \PHPUnit_Framework_TestCase
 {
     public function testGroupsJSON() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeGroups();
 
         $result = json_decode($response->render(true), true);
@@ -19,6 +20,7 @@ class GroupsTest extends \PHPUnit_Framework_TestCase
 
     public function testGroupsXML() {
         $response = new Response(2, 'xml');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeGroups();
 
         $result = new \DOMDocument();
@@ -33,6 +35,7 @@ class GroupsTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteGroups() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $ids = array(10, 11, 12, 13, 14, 20, 21);
 
         $response->mark('group', 'read', 3, 1000000053);

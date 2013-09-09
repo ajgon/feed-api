@@ -23,8 +23,9 @@ namespace RSSAPI;
  */
 class Response
 {
+    private $_type = array();
     private $_data = array();
-
+    private $_user = array();
 
     /**
      * Response constructor
@@ -50,20 +51,36 @@ class Response
     }
 
     /**
+     * Set information about user
+     *
+     * @param ORM|string $user User data or api key
+     */
+    public function setUser($user) {
+        if($user instanceof ORM) {
+            $this->_user = $user;
+        } else {
+            $user = \ORM::for_table('users')->where('api_key', $user)->find_one();
+            if($user) {
+                $this->_user = $user;
+            } else {
+                throw new Exception('Invalid API Key');
+            }
+        }
+
+    }
+
+    /**
      * Include information about last API call in response for given user (identified via API Key).
      *
      * @param  string $api_key API Key
      *
      * @return null
      */
-    public function includeLastRefreshsedOnTime($api_key = '')
+    public function includeLastRefreshsedOnTime()
     {
-        $user = \ORM::for_table('users')->where('api_key', $api_key)->find_one();
-        if($user) {
-            $this->_data['last_refreshed_on_time'] = $user->last_refreshed_on_time;
-            $user->last_refreshed_on_time = time();
-            $user->save();
-        }
+        $this->_data['last_refreshed_on_time'] = $this->_user->last_refreshed_on_time;
+        $this->_user->last_refreshed_on_time = time();
+        $this->_user->save();
     }
 
     /**
@@ -75,9 +92,11 @@ class Response
      */
     public function includeGroups($force = false)
     {
-        $groups = \ORM::for_table('groups')->find_array();
+        $feed_ids = $this->collectUserFeedIDs();
+
+        $groups = \ORM::for_table('groups')->join('feeds_groups', array('groups.id', '=', 'feeds_groups.group_id'))->where_in('feeds_groups.feed_id', $feed_ids)->group_by('groups.id')->find_array();
         if ($force || !isset($this->_data['groups'])) {
-            $this->_data['groups'] = $this->convertIDs($groups);
+            $this->_data['groups'] = $this->convertIDs($this->stripFields($groups, array('feed_id', 'group_id')));
         }
     }
 
@@ -90,7 +109,9 @@ class Response
      */
     public function includeFeedsGroups($force = false)
     {
-        $feeds_groups = \ORM::for_table('feeds_groups')->find_array();
+        $feed_ids = $this->collectUserFeedIDs();
+
+        $feeds_groups = \ORM::for_table('feeds_groups')->where_in('feed_id', $feed_ids)->order_by_asc('group_id')->find_array();
         if ($force || !isset($this->_data['feeds_groups'])) {
             $map_feeds_groups = array();
             $result = array();
@@ -117,7 +138,7 @@ class Response
      */
     public function includeFeeds($force = false)
     {
-        $feeds = \ORM::for_table('feeds')->find_array();
+        $feeds = $this->collectUserFeeds();
         if ($force || !isset($this->_data['feeds'])) {
             $this->_data['feeds'] = $this->convertIDs($this->stripFields($feeds, 'feed_type'));
         }
@@ -132,7 +153,13 @@ class Response
      */
     public function includeFavicons($force = false)
     {
-        $favicons = \ORM::for_table('favicons')->find_array();
+        $feeds = $this->collectUserFeeds();
+        $favicons_ids = array();
+        foreach ($feeds as $feed) {
+            $favicons_ids[] = $feed['favicon_id'];
+        }
+
+        $favicons = \ORM::for_table('favicons')->where_in('id', $favicons_ids)->find_array();
         if ($force || !isset($this->_data['favicons'])) {
             $this->_data['favicons'] = $this->convertIDs($favicons);
         }
@@ -147,19 +174,21 @@ class Response
      */
     public function includeItems($force = false, $since_id = null, $max_id = null, $with_ids = null)
     {
+        $feed_ids = $this->collectUserFeedIDs();
+
         if ($since_id) {
-            $items = \ORM::for_table('items')->where_gt('id', $since_id)->limit(50)->find_array();
+            $items = \ORM::for_table('items')->where_in('feed_id', $feed_ids)->where_gt('id', $since_id)->limit(50)->find_array();
         } else if ($max_id) {
             // Don't ask, fever API is dumb.
-            $items = \ORM::for_table('items')->where_lt('id', $max_id)->order_by_desc('id')->limit(50)->find_array();
+            $items = \ORM::for_table('items')->where_in('feed_id', $feed_ids)->where_lt('id', $max_id)->order_by_desc('id')->limit(50)->find_array();
             //$items = array_reverse($items);
         } else if ($with_ids) {
-            $items = \ORM::for_table('items')->where_in('id', $with_ids)->limit(50)->find_array();
+            $items = \ORM::for_table('items')->where_in('feed_id', $feed_ids)->where_in('id', $with_ids)->limit(50)->find_array();
         } else {
-            $items = \ORM::for_table('items')->limit(50)->find_array();
+            $items = \ORM::for_table('items')->where_in('feed_id', $feed_ids)->limit(50)->find_array();
         }
         if ($force || !isset($this->_data['items'])) {
-            $this->_data['total_items'] = (string)\ORM::for_table('items')->count();
+            $this->_data['total_items'] = (string)\ORM::for_table('items')->where_in('feed_id', $feed_ids)->count();
             $this->_data['items'] = $this->convertIDs($this->stripFields($items, array('added_on_time', 'rss_id')));
         }
     }
@@ -185,7 +214,9 @@ class Response
      * @return null
      */
     public function includeUnreadItemIds($force = false) {
-        $unread_item_ids = \ORM::for_table('items')->select('id')->where('is_read', 0)->find_array();
+        $feed_ids = $this->collectUserFeedIDs();
+
+        $unread_item_ids = \ORM::for_table('items')->select('id')->where_in('feed_id', $feed_ids)->where('is_read', 0)->find_array();
         $ids = array();
         foreach ($unread_item_ids as $unread_item_id) {
             $ids[] = $unread_item_id['id'];
@@ -203,7 +234,9 @@ class Response
      * @return null
      */
     public function includeSavedItemIds($force = false) {
-        $saved_item_ids = \ORM::for_table('items')->select('id')->where('is_saved', 1)->find_array();
+        $feed_ids = $this->collectUserFeedIDs();
+
+        $saved_item_ids = \ORM::for_table('items')->select('id')->where_in('feed_id', $feed_ids)->where('is_saved', 1)->find_array();
         $ids = array();
         foreach ($saved_item_ids as $saved_item_id) {
             $ids[] = $saved_item_id['id'];
@@ -341,6 +374,34 @@ class Response
         $xml .= "</{$node}>";
 
         return $xml;
+    }
+
+    /**
+     * Returns all feeds attached to specific user.
+     *
+     * @return array Feeds array
+     */
+    private function collectUserFeeds() {
+        if($this->_user->super) {
+            $feeds = \ORM::for_table('feeds')->find_array();
+        } else {
+            $feeds = \ORM::for_table('feeds')->join('feeds_users', array('feeds.id', '=', 'feeds_users.feed_id'))->where('feeds_users.user_id', $this->_user->id)->find_array();
+        }
+        return $feeds;
+    }
+
+    /**
+     * Returns all feed IDs attached to specific user.
+     *
+     * @return array Feed IDs array
+     */
+    private function collectUserFeedIDs() {
+        $feeds = $this->collectUserFeeds();
+        $ids = array();
+        foreach ($feeds as $feed) {
+            $ids[] = $feed['id'];
+        }
+        return $ids;
     }
 
     /**

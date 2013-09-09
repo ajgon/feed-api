@@ -6,6 +6,7 @@ class FaviconsTest extends \PHPUnit_Framework_TestCase
 {
     public function testFaviconsJSON() {
         $response = new Response(2, 'json');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeFavicons();
 
         $result = json_decode($response->render(true), true);
@@ -19,6 +20,7 @@ class FaviconsTest extends \PHPUnit_Framework_TestCase
 
     public function testFaviconsXML() {
         $response = new Response(2, 'xml');
+        $response->setUser('86b175152449a29e2c217c90965659d8');
         $response->includeFavicons();
 
         $result = new \DOMDocument();

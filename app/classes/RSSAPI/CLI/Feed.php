@@ -67,7 +67,7 @@ class Feed extends Base
             $parser = new $parserName();
             $items = $parser->parseLink($feed['url']);
 
-            \RSSAPI\Data::addToDatabase($items);
+            \RSSAPI\Data::addToDatabase($items, true);
         }
     }
 

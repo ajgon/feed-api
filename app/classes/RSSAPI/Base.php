@@ -53,7 +53,8 @@ class Base
         $this->initDatabase();
 
         if ($this->authenticate()) {
-            $this->_response->includeLastRefreshsedOnTime($_POST['api_key']);
+            $this->_response->setUser($_POST['api_key']);
+            $this->_response->includeLastRefreshsedOnTime();
 
             if (isset($_POST['mark'], $_POST['as'], $_POST['id'])) {
                 $this->_response->mark($_POST['mark'], $_POST['as'], $_POST['id'], isset($_POST['before']) ? $_POST['before'] : null);

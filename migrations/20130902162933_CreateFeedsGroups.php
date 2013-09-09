@@ -19,7 +19,7 @@ class CreateFeedsGroups extends Migration
      */
     public function down()
     {
-        $sql = 'DROP TABLE feeds';
+        $sql = 'DROP TABLE feeds_groups';
         $container = $this->getContainer();
         $container['db']->query($sql);
     }

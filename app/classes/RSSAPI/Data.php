@@ -49,11 +49,11 @@ class Data
     /**
      * Puts array of feed/items data to database.
      *
-     * @param array $items Format: array( 'feed' => array( feeds_table_column_names => feeds_table_column_values ), 'items' => array( items_table_column_names => items_table_column_values ) )
-     *
+     * @param array   $items Format: array( 'feed' => array( feeds_table_column_names => feeds_table_column_values ), 'items' => array( items_table_column_names => items_table_column_values ) )
+     * @param boolean $force Force insertion
      * @return array IDs of created items
      */
-    public static function addToDatabase($items)
+    public static function addToDatabase($items, $force = false)
     {
         $base = new Base();
         $base->initDatabase();
@@ -63,15 +63,18 @@ class Data
         // Add feed
         if (isset($items['feed'])) {
             $feed = \ORM::for_table('feeds')->where('url', $items['feed']['url'])->find_one();
-            if(!empty($items['feed']['url']) && !$feed) {
-                $feed = \ORM::for_table('feeds')->create();
+            if(!empty($items['feed']['url']) && ($force || !$feed)) {
+                if(!$feed) {
+                    $feed = \ORM::for_table('feeds')->create();
+                }
+
                 foreach ($items['feed'] as $key => $value) {
                     $feed->set($key, $value);
                 }
                 $feed->save();
                 $result['feed'] = $feed->id;
             } else {
-                throw new \RSSAPI\Exception('Feed already exists!');
+                throw new \RSSAPI\Exception('Feed already exists or missing url!');
             }
         }
 
@@ -104,6 +107,7 @@ class Data
             $user = \ORM::for_table('users')->create();
             $user->email = $items['user']['email'];
             $user->api_key = $items['user']['api_key'];
+            $user->super = isset($items['user']['super']) ? $items['user']['super'] : 0;
             $user->save();
             $result['user'] = $user->id;
         }

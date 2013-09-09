@@ -2,14 +2,14 @@
 
 use Phpmig\Migration\Migration;
 
-class CreateUsers extends Migration
+class CreateFeedsUsers extends Migration
 {
     /**
      * Do the migration
      */
     public function up()
     {
-        $sql = 'CREATE TABLE users (id integer PRIMARY KEY AUTOINCREMENT, email varchar(255) unique not null, api_key char(32) not null, super tinyint(1) default 0, last_refreshed_on_time timestamp DEFAULT 0)';
+        $sql = 'CREATE TABLE feeds_users (feed_id integer, user_id integer, PRIMARY KEY (feed_id, user_id))';
         $container = $this->getContainer();
         $container['db']->query($sql);
     }
@@ -19,7 +19,7 @@ class CreateUsers extends Migration
      */
     public function down()
     {
-        $sql = 'DROP TABLE users';
+        $sql = 'DROP TABLE feeds_users';
         $container = $this->getContainer();
         $container['db']->query($sql);
     }
