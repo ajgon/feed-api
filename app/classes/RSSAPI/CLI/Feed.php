@@ -84,12 +84,29 @@ class Feed extends Base
     }
 
     /**
-     * ./rssapi delete
+     * ./rssapi feed remove
      * Lists all feeds in database and allows user to delete unnecessary one.
      *
      * @return null
      */
-    public function remove() {
+    public function remove()
+    {
+        $feed_id = $this->getFeedIDFromUser();
+
+        if ($feed_id > 0) {
+            \ORM::for_table('items')->where('feed_id', $feed_id)->delete_many();
+            \ORM::for_table('feeds_groups')->where('feed_id', $feed_id)->delete_many();
+            \ORM::for_table('feeds')->where('id', $feed_id)->delete_many();
+        }
+    }
+
+    /**
+     * Fetches feed id chosen by user from the feeds list.
+     *
+     * @return integer feed ID
+     */
+    public function getFeedIDFromUser()
+    {
         $feeds = \ORM::for_table('feeds')->find_array();
         $items = array();
 
@@ -103,12 +120,6 @@ class Feed extends Base
         $list = array_map(create_function('$i', 'return $i[\'name\'];'), $items);
 
         $index = $this->userDetermine($list, false);
-        $feed_id = (int)$items[$index]['id'];
-
-        if ($feed_id > 0) {
-            \ORM::for_table('items')->where('feed_id', $feed_id)->delete_many();
-            \ORM::for_table('feeds_groups')->where('feed_id', $feed_id)->delete_many();
-            \ORM::for_table('feeds')->where('id', $feed_id)->delete_many();
-        }
+        return (int)$items[$index]['id'];
     }
 }

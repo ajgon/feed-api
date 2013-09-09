@@ -84,5 +84,11 @@ class Data
                 }
             }
         }
+
+        if(isset($items['group'])) {
+            $group = \ORM::for_table('groups')->create();
+            $group->title = $items['group']['title'];
+            $group->save();
+        }
     }
 }

@@ -36,7 +36,7 @@ User creation is not supported yet, so to do this add an account to the database
 
 The last thing is adding `rssapi fetch` task to your crontab. 5 minutes is a suggested time window:
 
-    */5 * * * * cat /home/htdocs/rzegocki.pl/rss/rssapi fetch
+    */5 * * * * cat /home/htdocs/rzegocki.pl/rss/rssapi feed fetch
 
 Run curl to check if everything operates smoothly:
 
@@ -52,7 +52,16 @@ Since it's a one on one port of Fever API, all docs can be found here: [http://f
 
 ## CLI usage
 
-* `rssapi add http://url.to.webpage.or.feed/` - will add feed to database. If URL to page is provided, rssapi will determine all the feeds in that page and offer a choice of the feed if multiple found. If only one feed is found, it will be added automatically.
-* `rssapi fetch` - fetches all new items for the feeds.
-* `rssapi list` - lists all the feeds in database.
-* `rssapi delete` - allows user to delete feeds.
+### Feeds
+
+* `rssapi feed add http://url.to.webpage.or.feed/` - will add feed to database. If URL to page is provided, rssapi will determine all the feeds in that page and offer a choice of the feed if multiple found. If only one feed is found, it will be added automatically.
+* `rssapi feed fetch` - fetches all new items for the feeds.
+* `rssapi feed show` - lists all feeds in database.
+* `rssapi feed remove` - allows user to delete feeds.
+
+### Groups
+
+* `rssapi group add group_name` - will add group to database.
+* `rssapi group attach` - displays list of groups, then list of feeds. If both group and feed are chosen, selected feed will be attached to selected group.
+* `rssapi group show` - lists all groups with corresponding feeds.
+* `rssapi group remove` - allows user to delete groups.

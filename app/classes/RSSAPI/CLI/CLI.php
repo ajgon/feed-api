@@ -72,10 +72,29 @@ class CLI extends Base
                     $this->error('Unknown action.');
                 }
                 break;
+            case 'group':
+                $group = new Group();
+                switch(self::$action) {
+                case 'add':
+                    $group->add();
+                    break;
+                case 'attach':
+                    $group->attach();
+                    break;
+                case 'show':
+                    $group->show();
+                    break;
+                case 'remove':
+                    $group->remove();
+                    break;
+                default:
+                    $this->error('Unknown action.');
+                }
+                break;
             default:
                 $this->error('Unknown object.');
             }
-        } catch (Exception $e) {
+        } catch (\RSSAPI\Exception $e) {
             $this->error($e->getMessage(), false);
         }
 
