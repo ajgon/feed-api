@@ -27,6 +27,7 @@ class Base
     static protected $object;
     static protected $param;
     static protected $command;
+    static protected $extra;
 
     /**
      * Displays error if something unexpected occures.
@@ -107,10 +108,7 @@ class Base
             }
             echo "0. Cancel\n";
 
-            $fh = fopen('php://stdin', 'r');
-            $line = fgets($fh);
-            $opt = (int)trim($line);
-            fclose($fh);
+            $opt = (int)$this->rawPrompt('');
         }
 
         return $opt - 1;
@@ -130,6 +128,51 @@ class Base
         echo "Actions: \n";
         echo "         feed: add, fetch, show, remove\n";
         echo "        group: add, attach, show, remove\n";
-        //echo "         user: add, remove\n";
+        echo "         user: add, show, remove\n";
+    }
+
+    /**
+     * Prompts user for data, without display user input. Useful for all password-type data.
+     *
+     * @param  string $prompt Prompt text
+     *
+     * @return string User input
+     */
+    protected function hiddenPrompt($prompt = "Enter Password:")
+    {
+        if (preg_match('/^win/i', PHP_OS)) {
+            $password = $this->rawPrompt("Warning: typed password won't be hidden in Windows-based OSes.\nIf you don't wish that to happen, please break this script now.\n{$prompt}");
+        } else {
+            $command = "/usr/bin/env bash -c 'echo OK'";
+            if (rtrim(shell_exec($command)) !== 'OK') {
+                $password = $this->rawPrompt($prompt, "Warning: typed password won't be hidden, since the bash shell is missing.\nIf you don't wish that to happen, please break this script now.\n{$prompt}");
+            }
+
+            $command = "/usr/bin/env bash -c 'read -s -p \"" . addslashes($prompt) . "\" mypassword && echo \$mypassword'";
+            $password = rtrim(shell_exec($command));
+            echo "\n";
+        }
+        return $password;
+    }
+
+    /**
+     * Prompts user for data
+     *
+     * @param  string $prompt  Prompt text
+     *
+     * @return string User input
+     */
+    protected function rawPrompt($prompt)
+    {
+        if(!empty($prompt)) {
+            echo $prompt . "\n";
+        }
+
+        $fh = fopen('php://stdin', 'r');
+        $line = fgets($fh);
+        $input = trim($line);
+        fclose($fh);
+
+        return $input;
     }
 }

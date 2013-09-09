@@ -28,19 +28,17 @@ Run migrations:
 
     vendor/bin/phpmig migrate
 
-User creation is not supported yet, so to do this add an account to the database manually. The fastest and most dirty way of doing this is:
+Next, add first user to the system:
 
-    FUSER='user@example.com'
-    FPASS='password'
-    sqlite3 db/data.db "INSERT INTO users VALUES (null, '$FUSER', '`echo -n "$FUSER:$FPASS" | md5sum | cut -f1 -d' '`', 0);"
+    ./rssapi user add user@email.com
 
-The last thing is adding `rssapi fetch` task to your crontab. 5 minutes is a suggested time window:
+The last thing is adding `rssapi feed fetch` task to your crontab. 5 minutes is a suggested time window:
 
     */5 * * * * cat /home/htdocs/rzegocki.pl/rss/rssapi feed fetch
 
 Run curl to check if everything operates smoothly:
 
-    curl --data api_key=`echo -n "$FUSER:$FPASS" | md5sum | cut -f1 -d' '` http://address.to.api/\?api
+    curl --data api_key=`echo -n "user@email.com:password" | md5sum | cut -f1 -d' '` http://address.to.api/\?api
 
 Your response should look like this:
 

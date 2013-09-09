@@ -90,5 +90,12 @@ class Data
             $group->title = $items['group']['title'];
             $group->save();
         }
+
+        if(isset($items['user'])) {
+            $user = \ORM::for_table('users')->create();
+            $user->email = $items['user']['email'];
+            $user->api_key = $items['user']['api_key'];
+            $user->save();
+        }
     }
 }

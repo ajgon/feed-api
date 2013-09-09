@@ -9,7 +9,7 @@ class CreateUsers extends Migration
      */
     public function up()
     {
-        $sql = 'CREATE TABLE users (id integer PRIMARY KEY AUTOINCREMENT, email varchar(255), api_key char(32), last_refreshed_on_time timestamp DEFAULT 0)';
+        $sql = 'CREATE TABLE users (id integer PRIMARY KEY AUTOINCREMENT, email varchar(255) unique, api_key char(32), last_refreshed_on_time timestamp DEFAULT 0)';
         $container = $this->getContainer();
         $container['db']->query($sql);
     }

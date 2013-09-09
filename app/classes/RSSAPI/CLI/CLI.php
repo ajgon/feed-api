@@ -34,8 +34,9 @@ class CLI extends Base
     {
         parent::$command = isset($args[0]) ? $args[0] : false;
         parent::$object  = isset($args[1]) ? $args[1] : false;
-        parent::$action  = isset($args[1]) ? $args[2] : false;
-        parent::$param   = isset($args[2]) ? $args[3] : false;
+        parent::$action  = isset($args[2]) ? $args[2] : false;
+        parent::$param   = isset($args[3]) ? $args[3] : false;
+        parent::$extra   = isset($args[4]) ? $args[4] : false;
         $this->initDatabase();
     }
 
@@ -86,6 +87,22 @@ class CLI extends Base
                     break;
                 case 'remove':
                     $group->remove();
+                    break;
+                default:
+                    $this->error('Unknown action.');
+                }
+                break;
+            case 'user':
+                $user = new User();
+                switch(self::$action) {
+                case 'add':
+                    $user->add();
+                    break;
+                case 'show':
+                    $user->show();
+                    break;
+                case 'remove':
+                    $user->remove();
                     break;
                 default:
                     $this->error('Unknown action.');
