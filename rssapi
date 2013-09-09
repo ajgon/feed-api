@@ -12,5 +12,5 @@ require $abs_dir . DS . 'app' . DS . 'classes' . DS . 'RSSAPI' . DS .'Autoload.p
 $autoloader = new RSSAPI\Autoload();
 $autoloader->setBasePath($abs_dir . DS . 'app' . DS . 'classes')->register();
 
-$base = new RSSAPI\CLI($argv);
-$base->process();
+$cli = new RSSAPI\CLI\CLI($argv);
+$cli->process();
