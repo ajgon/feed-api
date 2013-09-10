@@ -100,6 +100,12 @@ class User extends Base
 
         foreach ($users as $u => $user) {
             echo ($u + 1) . '. ' . $user['email'] . ($user['super'] ? ' (super)' : '') . "\n";
+            if(!$user['super']) {
+                $feeds = \ORM::for_table('feeds')->join('feeds_users', array('feeds_users.feed_id', '=', 'feeds.id'))->where('feeds_users.user_id', $user['id'])->find_array();
+                foreach ($feeds as $f => $feed) {
+                    echo "   - " . $feed['title'] . ' (' . $feed['url'] . ")\n";
+                }
+            }
         }
     }
 
