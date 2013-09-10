@@ -5,10 +5,10 @@
  * PHP version 5.3
  *
  * @category Core
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 namespace FeedAPI;
 
@@ -16,10 +16,10 @@ namespace FeedAPI;
  * Helper class with static methods to do different data manipulation tasks.
  *
  * @category Core
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 class Data
 {
@@ -81,7 +81,7 @@ class Data
         if(isset($items['items'])) {
             $result['items'] = array();
             foreach ($items['items'] as $data) {
-                $item = \ORM::for_table('items')->where('rss_id', $data['rss_id'])->find_one();
+                $item = \ORM::for_table('items')->where('feed_guid', $data['feed_guid'])->find_one();
                 if(!$item) {
                     $item = \ORM::for_table('items')->create();
                 }

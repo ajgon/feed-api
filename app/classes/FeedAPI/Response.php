@@ -5,21 +5,21 @@
  * PHP version 5.3
  *
  * @category Core
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 namespace FeedAPI;
 
 /**
- * Class used to prepare response from RSS-API.
+ * Class used to prepare response from FeedAPI.
  *
  * @category Core
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 class Response
 {
@@ -189,7 +189,7 @@ class Response
         }
         if ($force || !isset($this->_data['items'])) {
             $this->_data['total_items'] = (string)\ORM::for_table('items')->where_in('feed_id', $feed_ids)->count();
-            $this->_data['items'] = $this->convertIDs($this->stripFields($items, array('added_on_time', 'rss_id')));
+            $this->_data['items'] = $this->convertIDs($this->stripFields($items, array('added_on_time', 'feed_guid')));
         }
     }
 
@@ -246,7 +246,7 @@ class Response
     }
 
     /**
-     * Write API in one method. It covers all actions for setting RSS items/feeds/groups as read/unread or saved/unsaved.
+     * Write API in one method. It covers all actions for setting Feed items/feeds/groups as read/unread or saved/unsaved.
      *
      * @param  string    $type   Object type [item|feed|group]
      * @param  string    $as     Object status [read|unread|saved|unsaved]

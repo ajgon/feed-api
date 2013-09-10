@@ -5,10 +5,10 @@
  * PHP version 5.3
  *
  * @category Parsers
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 namespace FeedAPI\Parsers;
 
@@ -16,10 +16,10 @@ namespace FeedAPI\Parsers;
  * Class used to parse RSS feeds.
  *
  * @category Parsers
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 class RSS extends \FeedAPI\Parser
 {
@@ -106,7 +106,7 @@ class RSS extends \FeedAPI\Parser
                     $item['created_on_time'] = strtotime($node->textContent);
                     break;
                 case 'guid':
-                    $item['rss_id'] = $node->textContent;
+                    $item['feed_guid'] = $node->textContent;
                     break;
                 }
             }

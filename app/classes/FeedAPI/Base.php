@@ -5,10 +5,10 @@
  * PHP version 5.3
  *
  * @category Core
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 namespace FeedAPI;
 
@@ -16,10 +16,10 @@ namespace FeedAPI;
  * Main application class, used to handle requests and responses.
  *
  * @category Core
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 class Base
 {

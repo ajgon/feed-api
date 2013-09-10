@@ -3,7 +3,7 @@
 return array(
     array(
         'feed_id' => 1,
-        'rss_id' => 'guid1.1',
+        'feed_guid' => 'guid1.1',
         'title' => 'Item 1.1',
         'author' => 'Author 1.1',
         'html' => '<div class="entry">1.1</div>',
@@ -15,7 +15,7 @@ return array(
     ),
     array(
         'feed_id' => 1,
-        'rss_id' => 'guid1.2',
+        'feed_guid' => 'guid1.2',
         'title' => 'Item 1.2',
         'author' => 'Author 1.2',
         'html' => '<div class="entry">1.2</div>',
@@ -27,7 +27,7 @@ return array(
     ),
     array(
         'feed_id' => 1,
-        'rss_id' => 'guid1.3',
+        'feed_guid' => 'guid1.3',
         'title' => 'Item 1.3',
         'author' => 'Author 1.3',
         'html' => '<div class="entry">1.3</div>',
@@ -39,7 +39,7 @@ return array(
     ),
     array(
         'feed_id' => 1,
-        'rss_id' => 'guid1.4',
+        'feed_guid' => 'guid1.4',
         'title' => 'Item 1.4',
         'author' => 'Author 1.4',
         'html' => '<div class="entry">1.4</div>',
@@ -51,7 +51,7 @@ return array(
     ),
     array(
         'feed_id' => 1,
-        'rss_id' => 'guid1.5',
+        'feed_guid' => 'guid1.5',
         'title' => 'Item 1.5',
         'author' => 'Author 1.5',
         'html' => '<div class="entry">1.5</div>',
@@ -63,7 +63,7 @@ return array(
     ),
     array(
         'feed_id' => 2,
-        'rss_id' => 'guid2.1',
+        'feed_guid' => 'guid2.1',
         'title' => 'Item 2.1',
         'author' => 'Author 2.1',
         'html' => '<div class="entry">2.1</div>',
@@ -75,7 +75,7 @@ return array(
     ),
     array(
         'feed_id' => 2,
-        'rss_id' => 'guid2.2',
+        'feed_guid' => 'guid2.2',
         'title' => 'Item 2.2',
         'author' => 'Author 2.2',
         'html' => '<div class="entry">2.2</div>',
@@ -87,7 +87,7 @@ return array(
     ),
     array(
         'feed_id' => 2,
-        'rss_id' => 'guid2.3',
+        'feed_guid' => 'guid2.3',
         'title' => 'Item 2.3',
         'author' => 'Author 2.3',
         'html' => '<div class="entry">2.3</div>',
@@ -99,7 +99,7 @@ return array(
     ),
     array(
         'feed_id' => 2,
-        'rss_id' => 'guid2.4',
+        'feed_guid' => 'guid2.4',
         'title' => 'Item 2.4',
         'author' => 'Author 2.4',
         'html' => '<div class="entry">2.4</div>',
@@ -111,7 +111,7 @@ return array(
     ),
     array(
         'feed_id' => 2,
-        'rss_id' => 'guid2.5',
+        'feed_guid' => 'guid2.5',
         'title' => 'Item 2.5',
         'author' => 'Author 2.5',
         'html' => '<div class="entry">2.5</div>',
@@ -123,7 +123,7 @@ return array(
     ),
     array(
         'feed_id' => 3,
-        'rss_id' => 'guid3.1',
+        'feed_guid' => 'guid3.1',
         'title' => 'Item 3.1',
         'author' => 'Author 3.1',
         'html' => '<div class="entry">3.1</div>',
@@ -135,7 +135,7 @@ return array(
     ),
     array(
         'feed_id' => 3,
-        'rss_id' => 'guid3.2',
+        'feed_guid' => 'guid3.2',
         'title' => 'Item 3.2',
         'author' => 'Author 3.2',
         'html' => '<div class="entry">3.2</div>',
@@ -147,7 +147,7 @@ return array(
     ),
     array(
         'feed_id' => 3,
-        'rss_id' => 'guid3.3',
+        'feed_guid' => 'guid3.3',
         'title' => 'Item 3.3',
         'author' => 'Author 3.3',
         'html' => '<div class="entry">3.3</div>',
@@ -159,7 +159,7 @@ return array(
     ),
     array(
         'feed_id' => 3,
-        'rss_id' => 'guid3.4',
+        'feed_guid' => 'guid3.4',
         'title' => 'Item 3.4',
         'author' => 'Author 3.4',
         'html' => '<div class="entry">3.4</div>',
@@ -171,7 +171,7 @@ return array(
     ),
     array(
         'feed_id' => 3,
-        'rss_id' => 'guid3.5',
+        'feed_guid' => 'guid3.5',
         'title' => 'Item 3.5',
         'author' => 'Author 3.5',
         'html' => '<div class="entry">3.5</div>',
@@ -183,7 +183,7 @@ return array(
     ),
     array(
         'feed_id' => 4,
-        'rss_id' => 'guid4.1',
+        'feed_guid' => 'guid4.1',
         'title' => 'Item 4.1',
         'author' => 'Author 4.1',
         'html' => '<div class="entry">4.1</div>',
@@ -195,7 +195,7 @@ return array(
     ),
     array(
         'feed_id' => 4,
-        'rss_id' => 'guid4.2',
+        'feed_guid' => 'guid4.2',
         'title' => 'Item 4.2',
         'author' => 'Author 4.2',
         'html' => '<div class="entry">4.2</div>',
@@ -207,7 +207,7 @@ return array(
     ),
     array(
         'feed_id' => 4,
-        'rss_id' => 'guid4.3',
+        'feed_guid' => 'guid4.3',
         'title' => 'Item 4.3',
         'author' => 'Author 4.3',
         'html' => '<div class="entry">4.3</div>',
@@ -219,7 +219,7 @@ return array(
     ),
     array(
         'feed_id' => 4,
-        'rss_id' => 'guid4.4',
+        'feed_guid' => 'guid4.4',
         'title' => 'Item 4.4',
         'author' => 'Author 4.4',
         'html' => '<div class="entry">4.4</div>',
@@ -231,7 +231,7 @@ return array(
     ),
     array(
         'feed_id' => 4,
-        'rss_id' => 'guid4.5',
+        'feed_guid' => 'guid4.5',
         'title' => 'Item 4.5',
         'author' => 'Author 4.5',
         'html' => '<div class="entry">4.5</div>',
@@ -243,7 +243,7 @@ return array(
     ),
     array(
         'feed_id' => 5,
-        'rss_id' => 'guid5.1',
+        'feed_guid' => 'guid5.1',
         'title' => 'Item 5.1',
         'author' => 'Author 5.1',
         'html' => '<div class="entry">5.1</div>',
@@ -255,7 +255,7 @@ return array(
     ),
     array(
         'feed_id' => 5,
-        'rss_id' => 'guid5.2',
+        'feed_guid' => 'guid5.2',
         'title' => 'Item 5.2',
         'author' => 'Author 5.2',
         'html' => '<div class="entry">5.2</div>',
@@ -267,7 +267,7 @@ return array(
     ),
     array(
         'feed_id' => 5,
-        'rss_id' => 'guid5.3',
+        'feed_guid' => 'guid5.3',
         'title' => 'Item 5.3',
         'author' => 'Author 5.3',
         'html' => '<div class="entry">5.3</div>',
@@ -279,7 +279,7 @@ return array(
     ),
     array(
         'feed_id' => 5,
-        'rss_id' => 'guid5.4',
+        'feed_guid' => 'guid5.4',
         'title' => 'Item 5.4',
         'author' => 'Author 5.4',
         'html' => '<div class="entry">5.4</div>',
@@ -291,7 +291,7 @@ return array(
     ),
     array(
         'feed_id' => 5,
-        'rss_id' => 'guid5.5',
+        'feed_guid' => 'guid5.5',
         'title' => 'Item 5.5',
         'author' => 'Author 5.5',
         'html' => '<div class="entry">5.5</div>',

@@ -5,10 +5,10 @@
  * PHP version 5.3
  *
  * @category Parsers
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 namespace FeedAPI\Parsers;
 
@@ -16,10 +16,10 @@ namespace FeedAPI\Parsers;
  * Class used to parse ATOM feeds.
  *
  * @category Parsers
- * @package  RSS-API
+ * @package  FeedAPI
  * @author   Igor Rzegocki <igor@rzegocki.pl>
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
- * @link     https://github.com/ajgon/rss-api
+ * @link     https://github.com/ajgon/feed-api
  */
 class Atom extends \FeedAPI\Parser
 {
@@ -111,7 +111,7 @@ class Atom extends \FeedAPI\Parser
                     }
                     break;
                 case 'id':
-                    $item['rss_id'] = $node->textContent;
+                    $item['feed_guid'] = $node->textContent;
                     break;
                 }
             }

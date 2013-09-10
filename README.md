@@ -1,6 +1,6 @@
-# Feed-API
+# FeedAPI
 
-Feed-API is a [Fever](http://feedafever.com/) compatible Feed API supported by many readers such as [ReadKit](http://readkitapp.com/) or [Reeder](http://reederapp.com/).
+FeedAPI is a [Fever](http://feedafever.com/) compatible Feed API supported by many readers such as [ReadKit](http://readkitapp.com/) or [Reeder](http://reederapp.com/).
 
 It was built to be 100% compatible with Fever API basing on its [API Docs](http://feedafever.com/api). Sparks not included.
 
@@ -20,7 +20,7 @@ This tool can be considered as _stable enough_, it was tested in living environm
 
 Clone this repository:
 
-    git clone https://github.com/ajgon/rss-api.git rss
+    git clone https://github.com/ajgon/feed-api.git feed-api
 
 Your webserver should point to the repos `public/` directory. Also your `db/data.db` file should be writable both by the scripts and webserver. 
 
@@ -34,7 +34,7 @@ Next, add first user to the system:
 
 The last thing is adding `feedapi feed fetch` task to your crontab. 5 minutes is a suggested time window:
 
-    */5 * * * * cat /home/htdocs/rzegocki.pl/rss/feedapi feed fetch
+    */5 * * * * /path/to/feed-api/feedapi feed fetch
 
 Run curl to check if everything operates smoothly:
 
