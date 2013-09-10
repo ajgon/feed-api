@@ -1,6 +1,6 @@
 <?php
 
-namespace RSSAPI;
+namespace FeedAPI;
 
 class FeedsTest extends \PHPUnit_Framework_TestCase
 {

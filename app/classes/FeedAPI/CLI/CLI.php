@@ -10,7 +10,7 @@
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-namespace RSSAPI\CLI;
+namespace FeedAPI\CLI;
 
 /**
  * Class used to handle CLI commands.
@@ -126,7 +126,7 @@ class CLI extends Base
             default:
                 $this->error('Unknown object.');
             }
-        } catch (\RSSAPI\Exception $e) {
+        } catch (\FeedAPI\Exception $e) {
             $this->error($e->getMessage(), false);
         }
 
@@ -138,7 +138,7 @@ class CLI extends Base
      * @return null
      */
     private function initDatabase() {
-        $base = new \RSSAPI\Base();
+        $base = new \FeedAPI\Base();
         $base->initDatabase();
     }
 }

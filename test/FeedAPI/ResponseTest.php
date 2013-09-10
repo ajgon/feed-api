@@ -1,6 +1,6 @@
 <?php
 
-namespace RSSAPI;
+namespace FeedAPI;
 
 class ResponseTest extends \PHPUnit_Framework_TestCase
 {

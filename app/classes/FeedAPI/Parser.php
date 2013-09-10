@@ -10,7 +10,7 @@
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-namespace RSSAPI;
+namespace FeedAPI;
 
 /**
  * Abstract Parser class.
@@ -136,7 +136,7 @@ abstract class Parser
             $nodeName = strtolower($dom->childNodes->item($n)->nodeName);
             if (Parser::detectByNodeName($nodeName)) {
                 $type = Parser::detectByNodeName($nodeName);
-                $parserName = '\\RSSAPI\\Parsers\\' . $type;
+                $parserName = '\\FeedAPI\\Parsers\\' . $type;
                 $parser = new $parserName();
                 $items = $parser->parseLink($url);
                 if (!empty($items['feed']['site_url'])) {

@@ -17,10 +17,10 @@ $abs_dir = realpath(implode(DS, array(rtrim(__DIR__, DS), '..')));
 
 // Initialize autoloaders
 require $abs_dir . DS . 'vendor' . DS . 'autoload.php';
-require $abs_dir . DS . 'app' . DS . 'classes' . DS . 'RssApi' . DS .'Autoload.php';
+require $abs_dir . DS . 'app' . DS . 'classes' . DS . 'FeedApi' . DS .'Autoload.php';
 
-$autoloader = new RSSAPI\Autoload();
+$autoloader = new FeedAPI\Autoload();
 $autoloader->setBasePath($abs_dir . DS . 'app' . DS . 'classes')->register();
 
-$base = new RSSAPI\Base($abs_dir);
+$base = new FeedAPI\Base($abs_dir);
 $base->init();

@@ -10,7 +10,7 @@
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-namespace RSSAPI\CLI;
+namespace FeedAPI\CLI;
 
 /**
  * Class used to handle CLI commands related to users.
@@ -25,7 +25,7 @@ class User extends Base
 {
 
     /**
-     * ./rssapi user add [user email] <user password>
+     * ./feedapi user add [user email] <user password>
      * Adds given user to the database.
      *
      * @param boolean $super if true added user is a superuser (can see all the feeds).
@@ -55,7 +55,7 @@ class User extends Base
             $this->error('User with this email already exists', false);
         }
 
-        \RSSAPI\Data::addToDatabase(array(
+        \FeedAPI\Data::addToDatabase(array(
             'user' => array(
                 'email' => self::$param,
                 'api_key' => md5(self::$param . ':' . $password),
@@ -65,7 +65,7 @@ class User extends Base
     }
 
     /**
-     * ./rssapi user attach
+     * ./feedapi user attach
      * Attaches given user to given feed.
      *
      * @return null
@@ -79,7 +79,7 @@ class User extends Base
         if ($user_id > 0 && $feed_id > 0) {
             $res = \ORM::for_table('feeds_users')->where('user_id', $user_id)->where('feed_id', $feed_id)->count();
             if ($res > 0) {
-                throw new \RSSAPI\Exception('Relation already exists.');
+                throw new \FeedAPI\Exception('Relation already exists.');
             }
             $fg = \ORM::for_table('feeds_users')->create();
             $fg->feed_id = $feed_id;
@@ -89,7 +89,7 @@ class User extends Base
     }
 
     /**
-     * ./rssapi user show
+     * ./feedapi user show
      * Lists all users in database.
      *
      * @return null
@@ -104,7 +104,7 @@ class User extends Base
     }
 
     /**
-     * ./rssapi user remove
+     * ./feedapi user remove
      * Lists all users in database and allows user to delete unnecessary one.
      *
      * @return null
@@ -119,7 +119,7 @@ class User extends Base
     }
 
     /**
-     * ./rssapi user help
+     * ./feedapi user help
      * Displays short help describiing all available actions.
      *
      * @return null

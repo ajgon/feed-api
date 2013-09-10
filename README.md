@@ -30,11 +30,11 @@ Run migrations:
 
 Next, add first user to the system:
 
-    ./rssapi user add user@email.com
+    ./feedapi user add user@email.com
 
-The last thing is adding `rssapi feed fetch` task to your crontab. 5 minutes is a suggested time window:
+The last thing is adding `feedapi feed fetch` task to your crontab. 5 minutes is a suggested time window:
 
-    */5 * * * * cat /home/htdocs/rzegocki.pl/rss/rssapi feed fetch
+    */5 * * * * cat /home/htdocs/rzegocki.pl/rss/feedapi feed fetch
 
 Run curl to check if everything operates smoothly:
 
@@ -52,22 +52,22 @@ Since it's a one on one port of Fever API, all docs can be found here: [http://f
 
 ### Feeds
 
-* `rssapi feed add http://url.to.webpage.or.feed/` - will add feed to database. If URL to page is provided, rssapi will determine all the feeds in that page and offer a choice of the feed if multiple found. If only one feed is found, it will be added automatically.
-* `rssapi feed fetch` - fetches all new items for the feeds.
-* `rssapi feed show` - lists all feeds in database.
-* `rssapi feed remove` - allows user to delete feeds.
+* `feedapi feed add http://url.to.webpage.or.feed/` - will add feed to database. If URL to page is provided, feedapi will determine all the feeds in that page and offer a choice of the feed if multiple found. If only one feed is found, it will be added automatically.
+* `feedapi feed fetch` - fetches all new items for the feeds.
+* `feedapi feed show` - lists all feeds in database.
+* `feedapi feed remove` - allows user to delete feeds.
 
 ### Groups
 
-* `rssapi group add group_name` - will add group to database.
-* `rssapi group attach` - displays list of groups, then list of feeds. If both group and feed are chosen, selected feed will be attached to selected group.
-* `rssapi group show` - lists all groups with corresponding feeds.
-* `rssapi group remove` - allows user to delete groups.
+* `feedapi group add group_name` - will add group to database.
+* `feedapi group attach` - displays list of groups, then list of feeds. If both group and feed are chosen, selected feed will be attached to selected group.
+* `feedapi group show` - lists all groups with corresponding feeds.
+* `feedapi group remove` - allows user to delete groups.
 
 ### Users
 
-* `rssapi user add [email] <password>` - password is optional, if not provided, system will prompt for it (useful if you don't want to leave your password in `*_history` logs).
-* `rssapi user addsuper [email] <password>` - same as add, but added user is a super user (he can see all the groups and feeds)
-* `rssapi user attach` - displays list of users, then list of feeds. If both user and feed are chosen, selected feed will be attached to selected user (he will be able to fetch it)
-* `rssapi user show` - lists all users.
-* `rssapi user remove` - removes user chosen by user.
+* `feedapi user add [email] <password>` - password is optional, if not provided, system will prompt for it (useful if you don't want to leave your password in `*_history` logs).
+* `feedapi user addsuper [email] <password>` - same as add, but added user is a super user (he can see all the groups and feeds)
+* `feedapi user attach` - displays list of users, then list of feeds. If both user and feed are chosen, selected feed will be attached to selected user (he will be able to fetch it)
+* `feedapi user show` - lists all users.
+* `feedapi user remove` - removes user chosen by user.

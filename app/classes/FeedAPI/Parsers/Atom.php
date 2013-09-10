@@ -10,7 +10,7 @@
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-namespace RSSAPI\Parsers;
+namespace FeedAPI\Parsers;
 
 /**
  * Class used to parse ATOM feeds.
@@ -21,7 +21,7 @@ namespace RSSAPI\Parsers;
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-class Atom extends \RSSAPI\Parser
+class Atom extends \FeedAPI\Parser
 {
     const PARENT_NODE_NAME = 'feed';
     const MIME_TYPE = 'application/atom+xml';
@@ -34,7 +34,7 @@ class Atom extends \RSSAPI\Parser
      * @return array ['feed' => ..., 'items' => ...] format.
      */
     public function parseLink($url) {
-        $result = $this->parseData(\RSSAPI\Data::fetch($url));
+        $result = $this->parseData(\FeedAPI\Data::fetch($url));
         $result['feed']['url'] = $url;
 
         return $result;
@@ -52,7 +52,7 @@ class Atom extends \RSSAPI\Parser
         $success = $dom->loadXML($data);
 
         if (!$success) {
-            throw new \RSSAPI\Exception('Invalid Atom data in feed, website ATOM feed is probably broken.');
+            throw new \FeedAPI\Exception('Invalid Atom data in feed, website ATOM feed is probably broken.');
         }
 
         $time = time();

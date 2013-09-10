@@ -10,7 +10,7 @@
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-namespace RSSAPI\CLI;
+namespace FeedAPI\CLI;
 
 /**
  * Base class for CLI actions.
@@ -60,7 +60,7 @@ class Base
         $opt = -1;
 
         if ($listSize == 0) {
-            throw new \RSSAPI\Exception('Empty list to determine!');
+            throw new \FeedAPI\Exception('Empty list to determine!');
         }
 
         if ($listSize == 1 && $autoCommit) {

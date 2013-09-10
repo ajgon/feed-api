@@ -10,7 +10,7 @@
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-namespace RSSAPI\CLI;
+namespace FeedAPI\CLI;
 
 /**
  * Class used to handle CLI commands related to groups.
@@ -25,7 +25,7 @@ class Group extends Base
 {
 
     /**
-     * ./rssapi group add [group name]
+     * ./feedapi group add [group name]
      * Adds given group to the database.
      *
      * @return null
@@ -37,7 +37,7 @@ class Group extends Base
             return;
         }
 
-        \RSSAPI\Data::addToDatabase(array(
+        \FeedAPI\Data::addToDatabase(array(
             'group' => array(
                 'title' => self::$param
             )
@@ -45,7 +45,7 @@ class Group extends Base
     }
 
     /**
-     * ./rssapi group attach
+     * ./feedapi group attach
      * Attaches given group to given feed.
      *
      * @return null
@@ -59,7 +59,7 @@ class Group extends Base
         if ($group_id > 0 && $feed_id > 0) {
             $res = \ORM::for_table('feeds_groups')->where('group_id', $group_id)->where('feed_id', $feed_id)->count();
             if ($res > 0) {
-                throw new \RSSAPI\Exception('Relation already exists.');
+                throw new \FeedAPI\Exception('Relation already exists.');
             }
             $fg = \ORM::for_table('feeds_groups')->create();
             $fg->feed_id = $feed_id;
@@ -69,7 +69,7 @@ class Group extends Base
     }
 
     /**
-     * ./rssapi group show
+     * ./feedapi group show
      * Lists all groups in database.
      *
      * @return null
@@ -88,7 +88,7 @@ class Group extends Base
     }
 
     /**
-     * ./rssapi group remove
+     * ./feedapi group remove
      * Lists all groups in database and allows user to delete unnecessary one.
      *
      * @return null
@@ -104,7 +104,7 @@ class Group extends Base
     }
 
     /**
-     * ./rssapi group help
+     * ./feedapi group help
      * Displays short help describiing all available actions.
      *
      * @return null

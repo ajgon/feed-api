@@ -10,7 +10,7 @@
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-namespace RSSAPI;
+namespace FeedAPI;
 
 /**
  * Helper class with static methods to do different data manipulation tasks.
@@ -74,7 +74,7 @@ class Data
                 $feed->save();
                 $result['feed'] = $feed->id;
             } else {
-                throw new \RSSAPI\Exception('Feed already exists or missing url!');
+                throw new \FeedAPI\Exception('Feed already exists or missing url!');
             }
         }
 

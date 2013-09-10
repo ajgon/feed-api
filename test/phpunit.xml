@@ -1,6 +1,6 @@
 <phpunit bootstrap="test/bootstrap.php" colors="true">
    <testsuites>
-      <testsuite name="RSSAPI">
+      <testsuite name="FeedAPI">
          <directory>test</directory>
       </testsuite>
    </testsuites>

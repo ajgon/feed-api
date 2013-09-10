@@ -1,5 +1,5 @@
 <?php
-namespace RSSAPI;
+namespace FeedAPI;
 
 class Exception extends \Exception
 {

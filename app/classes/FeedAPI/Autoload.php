@@ -11,7 +11,7 @@
  * @link     https://github.com/ajgon/rss-api
  */
 
-namespace RSSAPI;
+namespace FeedAPI;
 
 /**
  * Class used to load other classess automagically.
@@ -41,7 +41,7 @@ class Autoload
      *
      * @param  string $basePath Base path
      *
-     * @return RSSAPI\Autoload self instance
+     * @return FeedAPI\Autoload self instance
      */
     public function setBasePath($basePath)
     {
@@ -102,7 +102,7 @@ class Autoload
     public function register($prepend = false)
     {
         if (!$this->_basePath) {
-            throw new \Exception('Base path for RSSAPI\Autoloader is not defined.');
+            throw new \Exception('Base path for FeedAPI\Autoloader is not defined.');
         }
 
         spl_autoload_register(array($this, 'loadClass'), true, $prepend);

@@ -53,7 +53,7 @@ foreach ($fixture_files as $fixture) {
 }
 
 // Set autoloader
-require $abs_dir . DS . 'app' . DS . 'classes' . DS . 'RssApi' . DS .'Autoload.php';
+require $abs_dir . DS . 'app' . DS . 'classes' . DS . 'FeedApi' . DS .'Autoload.php';
 
-$autoloader = new RSSAPI\Autoload();
+$autoloader = new FeedAPI\Autoload();
 $autoloader->setBasePath($abs_dir . DS . 'app' . DS . 'classes')->register();

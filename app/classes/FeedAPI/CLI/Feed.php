@@ -10,7 +10,7 @@
  * @license  http://opensource.org/licenses/BSD-3-Clause The BSD 3-Clause License
  * @link     https://github.com/ajgon/rss-api
  */
-namespace RSSAPI\CLI;
+namespace FeedAPI\CLI;
 
 /**
  * Class used to handle CLI commands related to feeds.
@@ -25,7 +25,7 @@ class Feed extends Base
 {
 
     /**
-     * ./rssapi feed add [site/rss url]
+     * ./feedapi feed add [site/rss url]
      * Adds given url feed to the database.
      *
      * @return null
@@ -42,18 +42,18 @@ class Feed extends Base
         $linkFavicon = $result['favicon'];
 
         if ($linkData) {
-            $parserName = '\\RSSAPI\\Parsers\\' . $linkData['type'];
+            $parserName = '\\FeedAPI\\Parsers\\' . $linkData['type'];
             $parser = new $parserName();
             $items = $parser->parseLink($linkData['url']);
             $items['feed']['favicon_id'] = $this->addFavicon($linkFavicon);
             unset($items['items']);
 
-            \RSSAPI\Data::addToDatabase($items);
+            \FeedAPI\Data::addToDatabase($items);
         }
     }
 
     /**
-     * ./rssapi feed fetch
+     * ./feedapi feed fetch
      * Fetches new or updated items for feeds in database.
      *
      * @return null
@@ -63,16 +63,16 @@ class Feed extends Base
         $feeds = \ORM::for_table('feeds')->find_array();
 
         foreach ($feeds as $feed) {
-            $parserName = '\\RSSAPI\\Parsers\\' . $feed['feed_type'];
+            $parserName = '\\FeedAPI\\Parsers\\' . $feed['feed_type'];
             $parser = new $parserName();
             $items = $parser->parseLink($feed['url']);
 
-            \RSSAPI\Data::addToDatabase($items, true);
+            \FeedAPI\Data::addToDatabase($items, true);
         }
     }
 
     /**
-     * ./rssapi feed show
+     * ./feedapi feed show
      * Lists all feeds in database.
      *
      * @return null
@@ -87,7 +87,7 @@ class Feed extends Base
     }
 
     /**
-     * ./rssapi feed remove
+     * ./feedapi feed remove
      * Lists all feeds in database and allows user to delete unnecessary one.
      *
      * @return null
@@ -104,7 +104,7 @@ class Feed extends Base
     }
 
     /**
-     * ./rssapi feed help
+     * ./feedapi feed help
      * Displays short help describiing all available actions.
      *
      * @return null
@@ -113,7 +113,7 @@ class Feed extends Base
         echo 'Usage: ' . self::$command . " feed <action> [site/rss url]\n";
         echo "Actions: \n";
         echo "  add [site/rss url] - will add feed to database. If URL to page is provided,  \n".
-             "                       rssapi will determine all the feeds in that page and    \n".
+             "                       feedapi will determine all the feeds in that page and    \n".
              "                       offer a choice of the feed if multiple found. If only   \n".
              "                       one feed is found, it will be added automatically       \n";
         echo "  fetch              - fetches all new items for the feeds\n";
@@ -155,8 +155,8 @@ class Feed extends Base
      * @return array Link data
      */
     private function fetchFeedData($url) {
-        $items = \RSSAPI\Parser::fetchFeedData($url);
-        $favicon = \RSSAPI\Parser::fetchFeedFavicon($url);
+        $items = \FeedAPI\Parser::fetchFeedData($url);
+        $favicon = \FeedAPI\Parser::fetchFeedFavicon($url);
 
         if (count($items) == 1) {
             return array(
@@ -198,7 +198,7 @@ class Feed extends Base
     private function addFavicon($url) {
         if ($url) {
             try {
-                $result = \RSSAPI\Data::fetch($url);
+                $result = \FeedAPI\Data::fetch($url);
                 $finfo = new \finfo(FILEINFO_MIME_TYPE);
                 $favicon = array('data' => $finfo->buffer($result) . ';base64,' . base64_encode($result));
             } catch(Exception $e) {
@@ -208,7 +208,7 @@ class Feed extends Base
             $favicon = array('data' => 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==');
         }
 
-        $res = \RSSAPI\Data::addToDatabase(array('favicon' => $favicon));
+        $res = \FeedAPI\Data::addToDatabase(array('favicon' => $favicon));
         return (int)$res['favicon'];
     }
 }
