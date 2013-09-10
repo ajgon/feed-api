@@ -89,6 +89,23 @@ class User extends Base
     }
 
     /**
+     * ./feedapi user detach
+     * Removes given feed from given user.
+     *
+     * @return null
+     */
+    public function detach()
+    {
+        $feed = new Feed();
+        $user_id = $this->getUserIDFromUser();
+        $feed_id = $feed->getFeedIDFromUser('user', $user_id);
+
+        if ($user_id > 0 && $feed_id > 0) {
+            $res = \ORM::for_table('feeds_users')->where('user_id', $user_id)->where('feed_id', $feed_id)->delete_many();
+        }
+    }
+
+    /**
      * ./feedapi user show
      * Lists all users in database.
      *
@@ -143,6 +160,7 @@ class User extends Base
              "                                both user and feed are chosen, selected feed   \n".
              "                                will be attached to selected user (he will be  \n".
              "                                able to fetch it)\n";
+        echo "  detach                      - removes given feed from given user\n";
         echo "  show                        - lists all users\n";
         echo "  remove                      - removes user chosen by user\n";
     }

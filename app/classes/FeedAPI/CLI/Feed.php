@@ -126,9 +126,14 @@ class Feed extends Base
      *
      * @return integer feed ID
      */
-    public function getFeedIDFromUser()
+    public function getFeedIDFromUser($filter_by = false, $id = 0)
     {
-        $feeds = \ORM::for_table('feeds')->find_array();
+        if(($filter_by == 'user' || $filter_by == 'group') && (int)$id > 0) {
+            $join = 'feeds_' . $filter_by . 's';
+            $feeds = \ORM::for_table('feeds')->join($join, array("{$join}.feed_id", '=', 'feeds.id'))->where("{$join}.{$filter_by}_id", $id)->find_array();
+        } else {
+            $feeds = \ORM::for_table('feeds')->find_array();
+        }
         $items = array();
 
         foreach ($feeds as $f => $feed) {

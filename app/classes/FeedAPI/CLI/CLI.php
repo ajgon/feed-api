@@ -85,6 +85,9 @@ class CLI extends Base
                 case 'attach':
                     $group->attach();
                     break;
+                case 'detach':
+                    $group->detach();
+                    break;
                 case 'show':
                     $group->show();
                     break;
@@ -109,6 +112,9 @@ class CLI extends Base
                     break;
                 case 'attach':
                     $user->attach();
+                    break;
+                case 'detach':
+                    $user->detach();
                     break;
                 case 'show':
                     $user->show();
