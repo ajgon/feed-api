@@ -114,6 +114,7 @@ class User extends Base
         $user_id = $this->getUserIDFromUser();
 
         if ($user_id > 0) {
+            \ORM::for_table('feeds_users')->where('user_id', $user_id)->delete_many();
             \ORM::for_table('users')->where('id', $user_id)->delete_many();
         }
     }
