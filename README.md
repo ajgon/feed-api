@@ -24,13 +24,17 @@ Clone this repository:
 
 Your webserver should point to the repos `public/` directory. Also your `db/data.db` file should be writable both by the scripts and webserver. 
 
+Install dependencies:
+
+    php composer.phar install
+
 Run migrations:
 
     vendor/bin/phpmig migrate
 
 Next, add first user to the system:
 
-    ./feedapi user add user@email.com
+    ./feedapi user addsuper user@email.com
 
 The last thing is adding `feedapi feed fetch` task to your crontab. 5 minutes is a suggested time window:
 

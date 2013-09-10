@@ -17,7 +17,7 @@ $abs_dir = realpath(implode(DS, array(rtrim(__DIR__, DS), '..')));
 
 // Initialize autoloaders
 require $abs_dir . DS . 'vendor' . DS . 'autoload.php';
-require $abs_dir . DS . 'app' . DS . 'classes' . DS . 'FeedApi' . DS .'Autoload.php';
+require $abs_dir . DS . 'app' . DS . 'classes' . DS . 'FeedAPI' . DS .'Autoload.php';
 
 $autoloader = new FeedAPI\Autoload();
 $autoloader->setBasePath($abs_dir . DS . 'app' . DS . 'classes')->register();
