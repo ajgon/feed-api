@@ -113,7 +113,9 @@ abstract class Parser
                 // This have to be done this way since alot of sites, says that link type is rss, while serving atom underneath.
                 $item = self::fetchFeedData($link->getAttribute('href'));
                 $item[0]['title'] = $link->getAttribute('title');
-                $items[] = $item[0];
+                if(!empty($item[0]['url'])) {
+                    $items[] = $item[0];
+                }
             }
         }
 
