@@ -33,6 +33,20 @@ class GroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testACLGroupsJSON() {
+        $response = new Response(2, 'json');
+        $response->setUser('105404aef1fb9f9952e8433294fe44a8');
+        $response->includeGroups();
+
+        $result = json_decode($response->render(true), true);
+
+        $this->assertNotEmpty($result['groups']);
+        $this->assertCount(4, $result['groups']);
+        for ($i = 0; $i < 4; $i++) {
+            $this->assertEquals('Test Group #' . ($i > 0 ? $i + 2 : $i + 1), $result['groups'][$i]['title']);
+        }
+    }
+
     public function testWriteGroups() {
         $response = new Response(2, 'json');
         $response->setUser('86b175152449a29e2c217c90965659d8');

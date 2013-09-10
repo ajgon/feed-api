@@ -35,8 +35,24 @@ class FeedsGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    private function concatenateIds($i) {
-        $ids = array($i + 1, (($i + 3) % 5 == 0 ) ? 5 : ($i + 3) % 5);
+    public function testACLFeedsGroupsJSON() {
+        $response = new Response(2, 'json');
+        $response->setUser('105404aef1fb9f9952e8433294fe44a8');
+        $response->includeFeedsGroups();
+
+        $result = json_decode($response->render(true), true);
+
+        $this->assertNotEmpty($result['feeds_groups']);
+        $this->assertCount(4, $result['feeds_groups']);
+        for ($i = 0; $i < 4; $i++) {
+            $this->assertEquals($i > 0 ? $i + 2 : $i + 1, $result['feeds_groups'][$i]['group_id']);
+            $this->assertEquals($this->concatenateIds($i > 0 ? $i + 1 : $i, array(1, 3, 5)), $result['feeds_groups'][$i]['feed_ids']);
+        }
+    }
+
+    private function concatenateIds($i, $only = array(1, 2, 3, 4, 5)) {
+        $ids = array_intersect($only, array($i + 1, (($i + 3) % 5 == 0 ) ? 5 : ($i + 3) % 5));
+
         sort($ids, SORT_NUMERIC);
         return implode(',', $ids);
     }

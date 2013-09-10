@@ -44,6 +44,26 @@ class FeedsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testACLFeedsJSON() {
+        $response = new Response(2, 'json');
+        $response->setUser('105404aef1fb9f9952e8433294fe44a8');
+        $response->includeFeeds();
+
+        $result = json_decode($response->render(true), true);
+
+        $this->assertNotEmpty($result['feeds']);
+        $this->assertCount(3, $result['feeds']);
+        for ($i = 0; $i < 3; $i++) {
+            $this->assertEquals($i * 2 + 1, $result['feeds'][$i]['favicon_id']);
+            $this->assertEmpty($result['feeds'][$i]['feed_type']);
+            $this->assertEquals('Test Feed #' . ($i * 2 + 1), $result['feeds'][$i]['title']);
+            $this->assertEquals('http://example.com/feed' . ($i * 2 + 1), $result['feeds'][$i]['url']);
+            $this->assertEquals('http://feed' . ($i * 2 + 1) . '.example.com/', $result['feeds'][$i]['site_url']);
+            $this->assertEquals(0, $result['feeds'][$i]['is_spark']);
+            $this->assertEquals(1000000001 + $i * 2, $result['feeds'][$i]['last_updated_on_time']);
+        }
+    }
+
     public function testWriteFeeds() {
         $response = new Response(2, 'json');
         $response->setUser('86b175152449a29e2c217c90965659d8');

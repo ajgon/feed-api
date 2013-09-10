@@ -82,6 +82,34 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testACLReadItemsJSON() {
+        $response = new Response(2, 'json');
+        $response->setUser('105404aef1fb9f9952e8433294fe44a8');
+        $response->includeItems();
+
+        $result = json_decode($response->render(true), true);
+
+        $this->assertNotEmpty($result['items']);
+        $this->assertEquals(15, $result['total_items']);
+        $this->assertCount(15, $result['items']);
+        for ($i = 1; $i < 4; $i++) {
+            for ($j = 1; $j < 6; $j++) {
+                $w = ($i - 1) * 2 + 1;
+                $idx = ($i - 1) * 5 + $j - 1;
+                $this->assertEquals($w, $result['items'][$idx]['feed_id']);
+                $this->assertEmpty($result['items'][$id]['rss_id']);
+                $this->assertEquals("Item {$w}.{$j}", $result['items'][$idx]['title']);
+                $this->assertEquals("Author {$w}.{$j}", $result['items'][$idx]['author']);
+                $this->assertEquals("<div class=\"entry\">{$w}.{$j}</div>", $result['items'][$idx]['html']);
+                $this->assertEquals("http://example.com/item{$w}.{$j}", $result['items'][$idx]['url']);
+                $this->assertEquals($j == 3 || $j == 4 ? 1 : 0, $result['items'][$idx]['is_saved']);
+                $this->assertEquals($j == 2 || $j == 4 ? 1 : 0, $result['items'][$idx]['is_read']);
+                $this->assertEquals(1000000000 + 10 * $w + $j, $result['items'][$idx]['created_on_time']);
+                $this->assertEmpty($result['items'][$id]['added_on_time']);
+            }
+        }
+    }
+
     public function testWriteItems() {
         $response = new Response(2, 'json');
         $response->setUser('86b175152449a29e2c217c90965659d8');
