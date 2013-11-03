@@ -49,7 +49,7 @@ class RSS extends \FeedAPI\Parser
      */
     public function parseData($data) {
         $dom = new \DOMDocument();
-        $success = $dom->loadXML($data);
+        $success = @$dom->loadXML($data);
 
         if (!$success) {
             throw new \FeedAPI\Exception('Invalid RSS data in feed, website RSS feed is probably broken.');

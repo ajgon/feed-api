@@ -37,14 +37,16 @@ class Base
      *
      * @return null
      */
-    protected function error($message, $param = 'parameter')
+    protected function error($message, $param = 'parameter', $terminate = true)
     {
         file_put_contents('php://stderr', $message . "\n");
         if($param) {
             $this->showUsage($param);
         }
         // TODO: Fix this
-        die;
+        if($terminate) {
+            die;
+        }
     }
 
     /**

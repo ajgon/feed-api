@@ -65,9 +65,13 @@ class Feed extends Base
         foreach ($feeds as $feed) {
             $parserName = '\\FeedAPI\\Parsers\\' . $feed['feed_type'];
             $parser = new $parserName();
-            $items = $parser->parseLink($feed['url']);
 
-            \FeedAPI\Data::addToDatabase($items, true);
+            try {
+                $items = $parser->parseLink($feed['url']);
+                \FeedAPI\Data::addToDatabase($items, true);
+            } catch(\Exception $e) {
+                $this->error("An error occured, while fetching \"{$feed['title']}\" feed data: " . $e->getMessage(), false, false);
+            }
         }
     }
 

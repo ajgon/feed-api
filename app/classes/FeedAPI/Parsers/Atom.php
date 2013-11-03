@@ -49,7 +49,7 @@ class Atom extends \FeedAPI\Parser
      */
     public function parseData($data) {
         $dom = new \DOMDocument();
-        $success = $dom->loadXML($data);
+        $success = @$dom->loadXML($data);
 
         if (!$success) {
             throw new \FeedAPI\Exception('Invalid Atom data in feed, website ATOM feed is probably broken.');
