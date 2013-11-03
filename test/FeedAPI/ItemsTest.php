@@ -18,7 +18,7 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
             for ($j = 1; $j < 6; $j++) {
                 $idx = ($i - 1) * 5 + $j - 1;
                 $this->assertEquals($i, $result['items'][$idx]['feed_id']);
-                $this->assertEmpty($result['items'][$id]['feed_guid']);
+                $this->assertArrayNotHasKey('feed_guid', $result['items'][$idx]);
                 $this->assertEquals("Item {$i}.{$j}", $result['items'][$idx]['title']);
                 $this->assertEquals("Author {$i}.{$j}", $result['items'][$idx]['author']);
                 $this->assertEquals("<div class=\"entry\">{$i}.{$j}</div>", $result['items'][$idx]['html']);
@@ -26,7 +26,7 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($j == 3 || $j == 4 ? 1 : 0, $result['items'][$idx]['is_saved']);
                 $this->assertEquals($j == 2 || $j == 4 ? 1 : 0, $result['items'][$idx]['is_read']);
                 $this->assertEquals(1000000000 + 10 * $i + $j, $result['items'][$idx]['created_on_time']);
-                $this->assertEmpty($result['items'][$id]['added_on_time']);
+                $this->assertArrayNotHasKey('added_on_time', $result['items'][$idx]);
             }
         }
 
@@ -97,7 +97,7 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
                 $w = ($i - 1) * 2 + 1;
                 $idx = ($i - 1) * 5 + $j - 1;
                 $this->assertEquals($w, $result['items'][$idx]['feed_id']);
-                $this->assertEmpty($result['items'][$id]['feed_guid']);
+                $this->assertArrayNotHasKey('feed_guid', $result['items'][$idx]);
                 $this->assertEquals("Item {$w}.{$j}", $result['items'][$idx]['title']);
                 $this->assertEquals("Author {$w}.{$j}", $result['items'][$idx]['author']);
                 $this->assertEquals("<div class=\"entry\">{$w}.{$j}</div>", $result['items'][$idx]['html']);
@@ -105,7 +105,7 @@ class ItemsTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($j == 3 || $j == 4 ? 1 : 0, $result['items'][$idx]['is_saved']);
                 $this->assertEquals($j == 2 || $j == 4 ? 1 : 0, $result['items'][$idx]['is_read']);
                 $this->assertEquals(1000000000 + 10 * $w + $j, $result['items'][$idx]['created_on_time']);
-                $this->assertEmpty($result['items'][$id]['added_on_time']);
+                $this->assertArrayNotHasKey('added_on_time', $result['items'][$idx]);
             }
         }
     }

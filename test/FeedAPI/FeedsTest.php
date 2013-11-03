@@ -15,7 +15,7 @@ class FeedsTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, $result['feeds']);
         for ($i = 0; $i < 5; $i++) {
             $this->assertEquals($i + 1, $result['feeds'][$i]['favicon_id']);
-            $this->assertEmpty($result['feeds'][$i]['feed_type']);
+            $this->assertArrayNotHasKey('feed_type', $result['feeds'][$i]);
             $this->assertEquals('Test Feed #' . ($i + 1), $result['feeds'][$i]['title']);
             $this->assertEquals('http://example.com/feed' . ($i + 1), $result['feeds'][$i]['url']);
             $this->assertEquals('http://feed' . ($i + 1) . '.example.com/', $result['feeds'][$i]['site_url']);
@@ -55,7 +55,7 @@ class FeedsTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $result['feeds']);
         for ($i = 0; $i < 3; $i++) {
             $this->assertEquals($i * 2 + 1, $result['feeds'][$i]['favicon_id']);
-            $this->assertEmpty($result['feeds'][$i]['feed_type']);
+            $this->assertArrayNotHasKey('feed_type', $result['feeds'][$i]);
             $this->assertEquals('Test Feed #' . ($i * 2 + 1), $result['feeds'][$i]['title']);
             $this->assertEquals('http://example.com/feed' . ($i * 2 + 1), $result['feeds'][$i]['url']);
             $this->assertEquals('http://feed' . ($i * 2 + 1) . '.example.com/', $result['feeds'][$i]['site_url']);

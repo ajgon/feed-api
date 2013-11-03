@@ -56,6 +56,8 @@ abstract class Parser
             return 'Atom';
         case $nodeName == Parsers\RSS::PARENT_NODE_NAME:
             return 'RSS';
+        case $nodeName == Parsers\RDF::PARENT_NODE_NAME:
+            return 'RDF';
         }
         return false;
     }
@@ -73,6 +75,8 @@ abstract class Parser
             return 'Atom';
         case $mimeType == Parsers\RSS::MIME_TYPE:
             return 'RSS';
+        case $mimeType == Parsers\RDF::MIME_TYPE:
+            return 'RDF';
         }
         return false;
     }
@@ -82,7 +86,7 @@ abstract class Parser
      *
      * @param  string $url Item url
      *
-     * @return array Feed data in format: [['type' => Atom/RSS, 'title' => <feed title>, 'url' = > <feed url>], ...]
+     * @return array Feed data in format: [['type' => Atom/RSS/RDF, 'title' => <feed title>, 'url' = > <feed url>], ...]
      */
     static public function fetchFeedData($url) {
         $html = Data::fetch($url);
@@ -90,7 +94,7 @@ abstract class Parser
         libxml_use_internal_errors(true);
         $dom->loadXML($html);
         for ($n = 0; $n < $dom->childNodes->length; $n++) {
-            $nodeName = strtolower($dom->childNodes->item($n)->nodeName);
+            $nodeName = $dom->childNodes->item($n)->nodeName;
             if (Parser::detectByNodeName($nodeName)) {
                 return array(
                     array(
@@ -135,7 +139,7 @@ abstract class Parser
         libxml_use_internal_errors(true);
         $dom->loadXML($xml);
         for ($n = 0; $n < $dom->childNodes->length; $n++) {
-            $nodeName = strtolower($dom->childNodes->item($n)->nodeName);
+            $nodeName = $dom->childNodes->item($n)->nodeName;
             if (Parser::detectByNodeName($nodeName)) {
                 $type = Parser::detectByNodeName($nodeName);
                 $parserName = '\\FeedAPI\\Parsers\\' . $type;

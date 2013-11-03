@@ -59,12 +59,15 @@ class RSS extends \FeedAPI\Parser
         $result = array(
             'feed' => array(
                 'last_updated_on_time' => $time,
-                'feed_type' => 'RSS'
+                'feed_type' => preg_replace('/^.*\\\\/', '', get_class($this))
             ),
             'items' => array()
         );
 
-        $feedChildren = $dom->getElementsByTagName('rss')->item(0)->getElementsByTagName('channel')->item(0)->childNodes;
+        $self = get_class($this);
+        $nodeName = preg_replace('/^.*:/', '', $self::PARENT_NODE_NAME); // strip namespaces
+
+        $feedChildren = $dom->getElementsByTagName($nodeName)->item(0)->getElementsByTagName('channel')->item(0)->childNodes;
 
         foreach ($feedChildren as $node) {
             $nodeName = strtolower($node->nodeName);
@@ -103,6 +106,7 @@ class RSS extends \FeedAPI\Parser
                     $item['url'] = $node->textContent;
                     break;
                 case 'pubdate':
+                case 'dc:date':
                     $item['created_on_time'] = strtotime($node->textContent);
                     break;
                 case 'guid':
@@ -111,6 +115,9 @@ class RSS extends \FeedAPI\Parser
                 }
             }
             $item['added_on_time'] = $time;
+            if(!isset($item['feed_guid'])) {
+                $item['feed_guid'] = sha1(serialize(($item)));
+            }
             $result['items'][] = $item;
         }
 
