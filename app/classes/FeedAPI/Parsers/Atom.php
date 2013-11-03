@@ -118,10 +118,10 @@ class Atom extends \FeedAPI\Parser
                     break;
                 }
             }
-            $item['added_on_time'] = $time;
             if(!isset($item['feed_guid'])) {
                 $item['feed_guid'] = sha1(serialize(($item)));
             }
+            $item['added_on_time'] = $time;
             $result['items'][] = $item;
         }
 
