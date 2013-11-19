@@ -49,6 +49,7 @@ class RSS extends \FeedAPI\Parser
      */
     public function parseData($data) {
         $dom = new \DOMDocument();
+        $data = parent::addHTMLEntities($data);
         $success = @$dom->loadXML($data);
 
         if (!$success) {

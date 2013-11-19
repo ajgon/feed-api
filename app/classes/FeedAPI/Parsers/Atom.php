@@ -49,6 +49,7 @@ class Atom extends \FeedAPI\Parser
      */
     public function parseData($data) {
         $dom = new \DOMDocument();
+        $data = parent::addHTMLEntities($data);
         $success = @$dom->loadXML($data);
 
         if (!$success) {
@@ -80,6 +81,11 @@ class Atom extends \FeedAPI\Parser
             switch($nodeName) {
             case 'title':
                 $result['feed']['title'] = $node->textContent;
+                break;
+            case 'id':
+                if(!isset($result['feed']['site_url'])) {
+                    $result['feed']['site_url'] = $node->textContent;
+                }
                 break;
             case 'link':
                 if($node->getAttribute('rel') == 'alternate' && $node->getAttribute('type') == 'text/html') {
@@ -119,6 +125,9 @@ class Atom extends \FeedAPI\Parser
                     break;
                 case 'id':
                     $item['feed_guid'] = $node->textContent;
+                    if(!isset($item['url'])) {
+                        $item['url'] = $node->textContent;
+                    }
                     break;
                 }
             }
