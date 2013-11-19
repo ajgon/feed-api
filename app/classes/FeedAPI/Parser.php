@@ -159,6 +159,9 @@ abstract class Parser
         foreach ($links as $link) {
             $rel = $link->getAttribute('rel');
             if (preg_match('/shortcut.?icon/', $rel)) {
+                if(!filter_var($link->getAttribute('href'), FILTER_VALIDATE_URL)) {
+                    return trim($url, '/') . '/' . trim($link->getAttribute('href'), '/');
+                }
                 return $link->getAttribute('href');
             }
         }
