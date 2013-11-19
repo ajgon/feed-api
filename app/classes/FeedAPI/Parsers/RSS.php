@@ -67,6 +67,10 @@ class RSS extends \FeedAPI\Parser
         $self = get_class($this);
         $nodeName = preg_replace('/^.*:/', '', $self::PARENT_NODE_NAME); // strip namespaces
 
+        if(!$dom->getElementsByTagName($nodeName)->item(0)) {
+            throw new \Exception('Missing Feed data');
+        }
+
         $feedChildren = $dom->getElementsByTagName($nodeName)->item(0)->getElementsByTagName('channel')->item(0)->childNodes;
 
         foreach ($feedChildren as $node) {
