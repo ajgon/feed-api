@@ -1,7 +1,15 @@
 {
     "require": {
-        "j4mie/idiorm": "1.3.0",
-        "phpunit/phpunit": "3.7.4",
-        "davedevelopment/phpmig": "0.4.0"
+        "davedevelopment/phpmig": "*",
+        "j4mie/idiorm": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "files": ["app/classes/Pimple.php"]
+    },
+    "config": {
+        "bin-dir": "bin/"
     }
 }

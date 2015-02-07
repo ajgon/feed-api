@@ -22,7 +22,7 @@ Clone this repository:
 
     git clone https://github.com/ajgon/feed-api.git feed-api
 
-Your webserver should point to the repos `public/` directory. Also your `db/data.db` file should be writable both by the scripts and webserver. 
+Your webserver should point to the repos `public/` directory. Also your `db/data.db` file should be writable both by the scripts and webserver.
 
 Install dependencies:
 
@@ -30,7 +30,7 @@ Install dependencies:
 
 Run migrations:
 
-    vendor/bin/phpmig migrate
+    bin/phpmig migrate
 
 Next, add first user to the system:
 

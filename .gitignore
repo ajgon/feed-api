@@ -1,3 +1,4 @@
 vendor
 migrations/*.log
 db/*.db
+bin/*
